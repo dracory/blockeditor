@@ -1,6 +1,6 @@
 module blockeditor
 
-go 1.23.1
+go 1.23
 
 require (
 	github.com/gouniverse/bs v0.13.0
