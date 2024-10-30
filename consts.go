@@ -1,0 +1,18 @@
+package blockeditor
+
+const ACTION = "action"
+const ACTION_BLOCK_ADD = "block_add"
+const ACTION_BLOCK_ADD_MODAL = "block_add_modal"
+const ACTION_BLOCK_DELETE = "block_delete"
+const ACTION_BLOCK_MOVE_UP = "block_move_up"
+const ACTION_BLOCK_MOVE_DOWN = "block_move_down"
+const ACTION_BLOCK_SETTINGS = "block_settings"
+const ACTION_BLOCK_SETTINGS_UPDATE = "block_settings_update"
+const ACTION_BLOCKS_SAVE = "blocks_save"
+const BLOCK_ID = "block_id"
+const BLOCK_TYPE = "block_type"
+const EDITOR_HANDLER_ENDPOINT = "editor_handler_endpoint"
+const EDITOR_ID = "editor_id"
+const EDITOR_NAME = "editor_name"
+const EDITOR_BLOCK_DEFINITIONS = "editor_block_definitions"
+const SETTINGS_PREFIX = "settings_"
