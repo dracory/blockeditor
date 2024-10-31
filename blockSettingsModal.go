@@ -32,8 +32,10 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 	blockForm := form.NewForm(form.FormOptions{
 		Fields: lo.IfF(found, func() []form.Field {
 			fields := lo.Map(definition.Fields, func(f form.Field, _ int) form.Field {
+				f.Value = block.Parameter(f.Name)
 				// we add the settings prefix to not conflict with other form fields (i.e. content)
 				f.Name = SETTINGS_PREFIX + f.Name
+				print(f.Name, f.Value)
 				return f
 			})
 			return fields

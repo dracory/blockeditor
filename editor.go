@@ -114,46 +114,6 @@ func (e *editor) buttonBlockInsert(atPosition int, single bool) *hb.Tag {
 		HxSwap(`beforeend`)
 
 	return button
-
-	// button := hb.Button().
-	// 	Class("btn btn-secondary btn-sm dropdown-toggle").
-	// 	Style(`border-radius: 30px;z-index: 100`).
-	// 	Type("button").
-	// 	Attr("data-bs-toggle", "dropdown").
-	// 	Attr("aria-expanded", "false").
-	// 	Child(hb.I().Class(`bi bi-plus-circle me-2`)).
-	// 	TextIf(single, " add new block ").
-	// 	TextIf(!single, " insert new block ")
-
-	// dropdown := hb.Div().
-	// 	Class(`dropdown`).
-	// 	Child(button).
-	// 	Child(hb.UL().
-	// 		Class("dropdown-menu").
-	// 		Children(lo.Map(b.availableTypes(), func(blockType string, _ int) hb.TagInterface {
-	// 			link := b.url(map[string]string{
-	// 				ACTION:                  ACTION_BLOCK_ADD,
-	// 				EDITOR_ID:               b.id,
-	// 				EDITOR_NAME:             b.name,
-	// 				EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-	// 				BLOCK_TYPE:              blockType,
-	// 				"at_position":           strconv.Itoa(atPosition),
-	// 			})
-
-	// 			dropdownItem := hb.Hyperlink().
-	// 				Class("dropdown-item").
-	// 				Href(link).
-	// 				Child(hb.Text(blockType)).
-	// 				HxPost(link).
-	// 				HxTarget("#" + b.id + "_wrapper").
-	// 				HxSwap(`outerHTML`)
-
-	// 			return hb.LI().
-	// 				Child(dropdownItem)
-	// 		})))
-
-	// return hb.NewWrap().
-	// 	Child(dropdown)
 }
 
 // blocksToCards creates a card for each block
@@ -203,7 +163,6 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 			Child(func() hb.TagInterface {
 				link := b.url(map[string]string{
 					ACTION:                  ACTION_BLOCK_ADD_MODAL,
-					BLOCK_ID:                block.ID(),
 					EDITOR_ID:               b.id,
 					EDITOR_NAME:             b.name,
 					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
@@ -223,8 +182,8 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 			}()).
 			Child(func() hb.TagInterface {
 				link := b.url(map[string]string{
-					ACTION:                  ACTION_BLOCK_ADD_MODAL,
-					BLOCK_ID:                block.ID(),
+					ACTION: ACTION_BLOCK_ADD_MODAL,
+					// BLOCK_ID:                block.ID(),
 					EDITOR_ID:               b.id,
 					EDITOR_NAME:             b.name,
 					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
@@ -246,7 +205,9 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 	card := hb.Div().
 		Class(`card`).
 		Child(
-			hb.Div().Class(`card-header`).
+			hb.Div().
+				Class(`card-header bg-info`).
+				Style(`--bs-bg-opacity: 0.2;`).
 				Child(dropdown).
 				Text(block.Type()).
 				Child(buttonDelete).
@@ -255,7 +216,8 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 				Child(buttonMoveDown),
 		).
 		Child(hb.Div().
-			Class(`card-body`).
+			Class(`card-body bg-info`).
+			Style(`--bs-bg-opacity: 0.1;`).
 			HTML(render))
 
 	return card

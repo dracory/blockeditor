@@ -1,6 +1,6 @@
 package blockeditor
 
-const ACTION = "action"
+const ACTION = "blockeditor_action"
 const ACTION_BLOCK_ADD = "block_add"
 const ACTION_BLOCK_ADD_MODAL = "block_add_modal"
 const ACTION_BLOCK_DELETE = "block_delete"
@@ -14,5 +14,4 @@ const BLOCK_TYPE = "block_type"
 const EDITOR_HANDLER_ENDPOINT = "editor_handler_endpoint"
 const EDITOR_ID = "editor_id"
 const EDITOR_NAME = "editor_name"
-const EDITOR_BLOCK_DEFINITIONS = "editor_block_definitions"
 const SETTINGS_PREFIX = "settings_"
