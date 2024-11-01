@@ -41,12 +41,12 @@ github.com/gouniverse/dataobject v0.3.0 h1:4m6zH8q3/Z159MrkX64gZO884SC2RE35FFzM1
 github.com/gouniverse/dataobject v0.3.0/go.mod h1:kGYa0bv14xCmkTCW2CpF9dIkh+S1N3O04c5eJY1jFqg=
 github.com/gouniverse/envenc v0.7.0 h1:8JZ4bNHYaDsXqYZzZISAI9P//ds0Z+2Q2kQFJxNQnaE=
 github.com/gouniverse/envenc v0.7.0/go.mod h1:TTa/whXbsQUopA8dMWjHXvAcyLZaTTrScbM4sMcIfDI=
-github.com/gouniverse/form v0.5.0 h1:uzKi95OV451APOlEVBFfF1tNr6aDNSfMRkkE1eDJNKo=
-github.com/gouniverse/form v0.5.0/go.mod h1:WZPvxYu2n95JfptODrSsLTxyJJOhvy3/G0ZlOXU+xDs=
+github.com/gouniverse/form v0.6.0 h1:N7hsQDOVcUowi7+tcjBgQ7a7cmaBs4Y5nrB/PmOMBwc=
+github.com/gouniverse/form v0.6.0/go.mod h1:D8C7wSKYHbyUFBc21132H4Ikrn9mgsyF4P1nmPqwv7M=
 github.com/gouniverse/hb v1.78.0 h1:Cm0Ge9EkT1eWrEw6zTynz0AKJS7FLtYx8tluftl3m3w=
 github.com/gouniverse/hb v1.78.0/go.mod h1:WDUCGoptHp/fAYT634lQ2846sGx88yXOOWMvlEaezYM=
-github.com/gouniverse/ui v0.8.0 h1:hp/+Aneunwc2IAxMLAvauwKiwALMLXiyrFU6HNZqe2M=
-github.com/gouniverse/ui v0.8.0/go.mod h1:w37+Nx4aoyqGtt7liSFw7q1D0HBQBo2asH+GUIocczk=
+github.com/gouniverse/ui v0.9.0 h1:uuhzozKjn4Mq0AzXiqx2Qm8drCBb9tN65sadkmQXz+0=
+github.com/gouniverse/ui v0.9.0/go.mod h1:w37+Nx4aoyqGtt7liSFw7q1D0HBQBo2asH+GUIocczk=
 github.com/gouniverse/uid v1.5.0 h1:evyGegnY7+KeYirDhJntI9xmODf8jPMQw8DlMpQIPnM=
 github.com/gouniverse/uid v1.5.0/go.mod h1:06dzYTyBLOu+iRlKZ8GxzEfgDSLyoZwgKns9Fcvt7G4=
 github.com/gouniverse/utils v1.45.0 h1:+9knpv0ksRbWlY9NhrwJlYswvcovOy9lE4XeuqrGPCs=

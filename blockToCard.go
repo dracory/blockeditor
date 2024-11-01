@@ -19,7 +19,10 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 	})
 
 	render := lo.If(!found, "No renderer for type: "+block.Type()).
-		ElseF(func() string { return definition.ToHTML(block) })
+		ElseF(func() string {
+			// return definition.ToHTML(block)
+			return definition.Icon.ToHTML()
+		})
 
 	card := hb.Div().
 		Class(`BlockCard card`).

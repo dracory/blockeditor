@@ -4,9 +4,9 @@ go 1.23
 
 require (
 	github.com/gouniverse/bs v0.13.0
-	github.com/gouniverse/form v0.5.0
+	github.com/gouniverse/form v0.6.0
 	github.com/gouniverse/hb v1.78.0
-	github.com/gouniverse/ui v0.8.0
+	github.com/gouniverse/ui v0.9.0
 	github.com/gouniverse/uid v1.5.0
 	github.com/gouniverse/utils v1.45.0
 	github.com/samber/lo v1.47.0
