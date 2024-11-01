@@ -13,6 +13,7 @@ import (
 // blockAddModal shows the block add modal
 func (e *editor) blockAddModal(r *http.Request) string {
 	atPosition := utils.Req(r, "at_position", "0")
+	parentID := utils.Req(r, "parent_id", "")
 
 	modalCloseScript := `document.getElementById('ModalBlockUpdate').remove();document.getElementById('ModalBackdrop').remove();`
 
@@ -30,6 +31,7 @@ func (e *editor) blockAddModal(r *http.Request) string {
 			EDITOR_HANDLER_ENDPOINT: e.handleEndpoint,
 			BLOCK_TYPE:              d.Type,
 			e.name:                  blocksJSON,
+			"parent_id":             parentID,
 			"at_position":           atPosition,
 		})
 
