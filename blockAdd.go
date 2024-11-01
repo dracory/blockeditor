@@ -34,18 +34,6 @@ func (b *editor) blockAdd(r *http.Request) string {
 	if parentID != "" {
 		flatTree := NewFlatTree(b.blocks)
 		flatTree.AddBlock(parentID, blockNew)
-		// parent, parentPosition, found := lo.FindIndexOf(b.blocks, func(b ui.BlockInterface) bool {
-		// 	return b.ID() == parentID
-		// })
-		// parent, parentPosition, found := lo.FindIndexOf(flatTree, func(bExt BlockExt) bool {
-		// 	return bExt.ID == parentID
-		// })
-
-		// if found {
-		// 	parent.AddChild(blockNew)
-		// 	b.blocks[parentPosition] = parent
-		// }
-
 		b.blocks = flatTree.ToBlocks()
 	} else {
 		b.blocks = append(b.blocks[:atPositionInt], append([]ui.BlockInterface{blockNew}, b.blocks[atPositionInt:]...)...)

@@ -21,7 +21,7 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 	render := lo.If(!found, "No renderer for type: "+block.Type()).
 		ElseF(func() string {
 			// return definition.ToHTML(block)
-			return definition.Icon.ToHTML()
+			return hb.NewTag("center").Child(definition.Icon).Style("font-size: 40px;").ToHTML()
 		})
 
 	card := hb.Div().
