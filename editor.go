@@ -83,6 +83,10 @@ func (b *editor) ToHTML() string {
 //  #` + wrapperID + ` .BlockCard:hover .card-header {
 //    display: block;
 //  }
+
+ #` + wrapperID + ` #ModalBlockAdd .card:hover {
+   background-color: cornsilk;
+ }
 	`
 
 	return hb.Wrap().
