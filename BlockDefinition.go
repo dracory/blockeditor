@@ -7,8 +7,9 @@ import (
 )
 
 type BlockDefinition struct {
-	Icon   hb.TagInterface
-	Type   string
-	Fields []form.Field
-	ToHTML func(block ui.BlockInterface) string // optional
+	Icon            hb.TagInterface
+	Type            string
+	Fields          []form.Field
+	AllowedChildren []string
+	ToHTML          func(block ui.BlockInterface) string // optional
 }

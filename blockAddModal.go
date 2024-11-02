@@ -15,7 +15,7 @@ func (e *editor) blockAddModal(r *http.Request) string {
 	atPosition := utils.Req(r, "at_position", "0")
 	parentID := utils.Req(r, "parent_id", "")
 
-	modalCloseScript := `document.getElementById('ModalBlockUpdate').remove();document.getElementById('ModalBackdrop').remove();`
+	modalCloseScript := `document.getElementById('ModalBlockAdd').remove();document.getElementById('ModalBackdrop').remove();`
 
 	blocksJSON, err := ui.BlocksToJson(e.blocks)
 
@@ -23,7 +23,19 @@ func (e *editor) blockAddModal(r *http.Request) string {
 		return err.Error()
 	}
 
-	blockTiles := lo.Map(e.blockDefinitions, func(d BlockDefinition, _ int) hb.TagInterface {
+	definition := e.findDefinitionByID(parentID)
+
+	allowedTypes := lo.IfF(definition != nil, func() []string {
+		return definition.AllowedChildren
+	}).Else([]string{})
+
+	allowedDefinitions := lo.IfF(len(allowedTypes) > 0, func() []BlockDefinition {
+		return lo.Filter(e.blockDefinitions, func(d BlockDefinition, _ int) bool {
+			return lo.Contains(allowedTypes, d.Type)
+		})
+	}).Else(e.blockDefinitions)
+
+	blockTiles := lo.Map(allowedDefinitions, func(d BlockDefinition, _ int) hb.TagInterface {
 		link := e.url(map[string]string{
 			ACTION:                  ACTION_BLOCK_ADD,
 			EDITOR_ID:               e.id,
@@ -57,7 +69,7 @@ func (e *editor) blockAddModal(r *http.Request) string {
 		OnClick(modalCloseScript)
 
 	modal := bs.Modal().
-		ID("ModalBlockUpdate").
+		ID("ModalBlockAdd").
 		Class("fade show").
 		Style(`display:block;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1051;`).
 		Children([]hb.TagInterface{
