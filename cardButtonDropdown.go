@@ -8,6 +8,8 @@ import (
 )
 
 func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
+	blockExt := NewFlatTree(b.blocks).FindBlockExt(block.ID())
+
 	position := lo.IndexOf(b.blocks, block)
 
 	dropdown := hb.Div().
@@ -22,6 +24,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 		Child(hb.UL().
 			Class("dropdown-menu").
 			Child(func() hb.TagInterface {
+				// Add child
 				link := b.url(map[string]string{
 					ACTION:                  ACTION_BLOCK_ADD_MODAL,
 					EDITOR_ID:               b.id,
@@ -33,6 +36,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 				dropdownItem := hb.Hyperlink().
 					Class("dropdown-item").
 					Href(link).
+					Child(hb.I().Class(`bi bi-plus-circle me-2`)).
 					Text("Add child").
 					HxPost(link).
 					HxTarget("#" + b.id + "_wrapper").
@@ -41,7 +45,9 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 				return hb.LI().
 					Child(dropdownItem)
 			}()).
+			Child(hb.Div().Class("dropdown-divider")).
 			Child(func() hb.TagInterface {
+				// Insert sibling before
 				link := b.url(map[string]string{
 					ACTION:                  ACTION_BLOCK_ADD_MODAL,
 					EDITOR_ID:               b.id,
@@ -53,6 +59,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 				dropdownItem := hb.Hyperlink().
 					Class("dropdown-item").
 					Href(link).
+					Child(hb.I().Class(`bi bi-arrow-90deg-right me-2`)).
 					Text("Insert sibling before").
 					HxPost(link).
 					HxTarget("#" + b.id + "_wrapper").
@@ -62,6 +69,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 					Child(dropdownItem)
 			}()).
 			Child(func() hb.TagInterface {
+				// Insert sibling after
 				link := b.url(map[string]string{
 					ACTION:                  ACTION_BLOCK_ADD_MODAL,
 					EDITOR_ID:               b.id,
@@ -73,10 +81,78 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 				dropdownItem := hb.Hyperlink().
 					Class("dropdown-item").
 					Href(link).
+					Child(hb.I().Class(`bi bi-arrow-return-right me-2`)).
 					Text("Insert sibling after").
 					HxPost(link).
 					HxTarget("#" + b.id + "_wrapper").
 					HxSwap(`beforeend`)
+
+				return hb.LI().
+					Child(dropdownItem)
+			}()).
+			Child(hb.Div().Class("dropdown-divider")).
+			Child(func() hb.TagInterface {
+				// Move into previous sibling
+				link := b.url(map[string]string{
+					ACTION:                  ACTION_BLOCK_MOVE_INTO,
+					EDITOR_ID:               b.id,
+					EDITOR_NAME:             b.name,
+					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+					"block_id":              block.ID(),
+					"in_sibling":            "previous",
+				})
+				dropdownItem := hb.Hyperlink().
+					Class("dropdown-item").
+					Href(link).
+					Child(hb.I().Class(`bi bi-arrow-up-right-square me-2`)).
+					Text("Move into previous sibling").
+					HxPost(link).
+					HxTarget("#" + b.id + "_wrapper").
+					HxSwap(`outerHTML`)
+
+				return hb.LI().
+					Child(dropdownItem)
+			}()).
+			Child(func() hb.TagInterface {
+				// Move into next sibling
+				link := b.url(map[string]string{
+					ACTION:                  ACTION_BLOCK_MOVE_INTO,
+					EDITOR_ID:               b.id,
+					EDITOR_NAME:             b.name,
+					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+					"block_id":              block.ID(),
+					"in_sibling":            "next",
+				})
+				dropdownItem := hb.Hyperlink().
+					Class("dropdown-item").
+					Href(link).
+					Child(hb.I().Class(`bi bi-arrow-down-right-square me-2`)).
+					Text("Move into next sibling").
+					HxPost(link).
+					HxTarget("#" + b.id + "_wrapper").
+					HxSwap(`outerHTML`)
+
+				return hb.LI().
+					Child(dropdownItem)
+			}()).
+			ChildIf(blockExt.ParentID != "", hb.Div().Class("dropdown-divider")).
+			ChildIf(blockExt.ParentID != "", func() hb.TagInterface {
+				// Move into previous sibling
+				link := b.url(map[string]string{
+					ACTION:                  ACTION_BLOCK_MOVE_OUT,
+					EDITOR_ID:               b.id,
+					EDITOR_NAME:             b.name,
+					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+					"block_id":              block.ID(),
+				})
+				dropdownItem := hb.Hyperlink().
+					Class("dropdown-item").
+					Href(link).
+					Child(hb.I().Class(`bi bi-arrow-down-left-square me-2`)).
+					Text("Move out of parent block").
+					HxPost(link).
+					HxTarget("#" + b.id + "_wrapper").
+					HxSwap(`outerHTML`)
 
 				return hb.LI().
 					Child(dropdownItem)

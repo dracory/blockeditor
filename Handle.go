@@ -73,6 +73,14 @@ func Handle(w http.ResponseWriter, r *http.Request, blockDefinitions []BlockDefi
 		return blockEditor.blockMoveDown(r)
 	}
 
+	if action == ACTION_BLOCK_MOVE_INTO {
+		return blockEditor.blockMoveInto(r)
+	}
+
+	if action == ACTION_BLOCK_MOVE_OUT {
+		return blockEditor.blockMoveOut(r)
+	}
+
 	if action == ACTION_BLOCK_SETTINGS {
 		return blockEditor.blockSettingsModal(r)
 	}
