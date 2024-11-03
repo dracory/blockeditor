@@ -8,6 +8,8 @@ import (
 
 // blockToCard creates a card for a block
 func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
+	// blockExt := b.findBlockByID(block.ID())
+
 	buttonMoveUp := b.cardButtonMoveUp(block.ID())
 	buttonMoveDown := b.cardButtonMoveDown(block.ID())
 	buttonEdit := b.cardButtonSettings(block.ID())
@@ -50,11 +52,15 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 			Class(`card-body bg-info`).
 			ClassIf(block.Type() == "row", `row`).
 			Style(`--bs-bg-opacity: 0.1;`).
+			// ChildIf(len(block.Children()) < 1, b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, 0, false))).
 			ChildrenIfF(len(block.Children()) > 0, func() []hb.TagInterface {
-				return lo.Map(block.Children(), func(child ui.BlockInterface, _ int) hb.TagInterface {
-					return b.blockToCard(child)
+				return lo.Map(block.Children(), func(child ui.BlockInterface, position int) hb.TagInterface {
+					return hb.Wrap().
+						// Child(b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, position, false))).
+						Child(b.blockToCard(child))
 				})
 			}).
+			// ChildIf(len(block.Children()) > 0, b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, len(block.Children()), false))).
 			HTMLIf(len(block.Children()) < 1, render))
 
 	if block.Type() == "column" {

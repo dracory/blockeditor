@@ -38,7 +38,7 @@ func (b *editor) ToHTML() string {
 
 	editor := hb.Div().
 		Style("border:1px solid silver; padding:10px").
-		ChildIf(len(b.blocks) < 1, b.buttonBlockInsert(0, true)).
+		ChildIf(len(b.blocks) < 1, b.buttonBlockInsert("", 0, true)).
 		HTMLIf(len(b.blocks) > 0, b.blocksToCards(b.blocks))
 
 	buttonSeeSource := hb.Span().
@@ -102,12 +102,13 @@ func (b *editor) ToHTML() string {
 // buttonBlockInsert creates a dropdown button for inserting a new block
 //
 // The dropdown will list all of the available block types
-func (e *editor) buttonBlockInsert(atPosition int, single bool) *hb.Tag {
+func (e *editor) buttonBlockInsert(parentID string, atPosition int, single bool) *hb.Tag {
 	link := e.url(map[string]string{
 		ACTION:                  ACTION_BLOCK_ADD_MODAL,
 		EDITOR_ID:               e.id,
 		EDITOR_NAME:             e.name,
 		EDITOR_HANDLER_ENDPOINT: e.handleEndpoint,
+		"parent_id":             parentID,
 		"at_position":           cast.ToString(atPosition),
 	})
 

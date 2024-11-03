@@ -9,14 +9,14 @@ import (
 func (b *editor) blocksToCards(blocks []ui.BlockInterface) string {
 	wrap := hb.Wrap()
 
-	wrap.Child(b.blockDivider().Child(b.buttonBlockInsert(0, false)))
+	wrap.Child(b.blockDivider().Child(b.buttonBlockInsert("", 0, false)))
 
 	for index, block := range blocks {
 		position := index + 1
 
 		wrap.Child(b.blockToCard(block))
 
-		wrap.Child(b.blockDivider().Child(b.buttonBlockInsert(position, false)))
+		wrap.Child(b.blockDivider().Child(b.buttonBlockInsert("", position, false)))
 	}
 
 	return wrap.ToHTML()
