@@ -222,6 +222,73 @@ func (b *editor) settingFields(blockFields []form.Field) []form.Field {
 			Label: "Font Family",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 		},
+		{
+			Name:  "font_weight",
+			Label: "Font Weight",
+			Type:  form.FORM_FIELD_TYPE_SELECT,
+			Options: []form.FieldOption{
+				{
+					Value: "",
+					Key:   "",
+				},
+				{
+					Value: "normal",
+					Key:   "normal",
+				},
+				{
+					Value: "bold",
+					Key:   "bold",
+				},
+				{
+					Value: "bolder",
+					Key:   "bolder",
+				},
+				{
+					Value: "light",
+					Key:   "light",
+				},
+				{
+					Value: "lighter",
+					Key:   "lighter",
+				},
+				{
+					Value: "100",
+					Key:   "100",
+				},
+				{
+					Value: "200",
+					Key:   "200",
+				},
+				{
+					Value: "300",
+					Key:   "300",
+				},
+				{
+					Value: "400",
+					Key:   "400",
+				},
+				{
+					Value: "500",
+					Key:   "500",
+				},
+				{
+					Value: "600",
+					Key:   "600",
+				},
+				{
+					Value: "700",
+					Key:   "700",
+				},
+				{
+					Value: "800",
+					Key:   "800",
+				},
+				{
+					Value: "900",
+					Key:   "900",
+				},
+			},
+		},
 	}
 
 	fields = append(fields, form.Field{
