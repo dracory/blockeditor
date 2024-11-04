@@ -42,13 +42,11 @@ func (e *editor) blockAddModal(r *http.Request) string {
 			EDITOR_NAME:             e.name,
 			EDITOR_HANDLER_ENDPOINT: e.handleEndpoint,
 			BLOCK_TYPE:              d.Type,
-			e.name:                  blocksJSON,
-			"parent_id":             parentID,
-			"at_position":           atPosition,
 		})
 
 		return bs.Card().
 			HxPost(link).
+			HxInclude("#ModalBlockAdd").
 			HxTarget("#" + e.id + "_wrapper").
 			HxSwap(`outerHTML`).
 			Class("w-100 h-100").
@@ -88,18 +86,18 @@ func (e *editor) blockAddModal(r *http.Request) string {
 						}),
 
 						bs.ModalBody().
+							Child(hb.Input().Type(hb.TYPE_HIDDEN).Name(e.name).Value(blocksJSON)).
+							Child(hb.Input().Type(hb.TYPE_HIDDEN).Name("at_position").Value(atPosition)).
+							Child(hb.Input().Type(hb.TYPE_HIDDEN).Name("parent_id").Value(parentID)).
 							Child(bs.Row().
 								Class("g-3").
 								Children(lo.Map(blockTiles, func(tile hb.TagInterface, _ int) hb.TagInterface {
 									return bs.Column(4).Child(tile)
 								}))),
-
 						bs.ModalFooter().
 							Style("display:flex; justify-content: space-between;").
 							Children([]hb.TagInterface{
 								buttonClose,
-
-								// buttonUpdate,
 							}),
 					}),
 				}),

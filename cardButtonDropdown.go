@@ -8,7 +8,7 @@ import (
 )
 
 func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
-	blockExt := NewFlatTree(b.blocks).FindBlockExt(block.ID())
+	blockExt := NewFlatTree(b.blocks).Find(block.ID())
 
 	position := lo.IndexOf(b.blocks, block)
 

@@ -15,13 +15,7 @@ func (b *editor) blockDelete(r *http.Request) string {
 	}
 
 	flatTree := NewFlatTree(b.blocks)
-	blockExt := flatTree.FindBlockExt(blockID)
-
-	if blockExt == nil {
-		return b.ToHTML()
-	}
-
-	flatTree.RemoveBlockExt(*blockExt)
+	flatTree.Remove(blockID)
 	b.blocks = flatTree.ToBlocks()
 
 	return b.ToHTML()

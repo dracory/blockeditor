@@ -15,21 +15,7 @@ func (b *editor) blockMoveDown(r *http.Request) string {
 	}
 
 	flatTree := NewFlatTree(b.blocks)
-	blockExt := flatTree.FindBlockExt(blockID)
-	nextBlockExt := flatTree.FindNextBlockExt(*blockExt)
-
-	if nextBlockExt == nil {
-		return b.ToHTML()
-	}
-
-	nextSequence := nextBlockExt.Sequence
-	sequence := blockExt.Sequence
-
-	blockExt.Sequence = nextSequence
-	nextBlockExt.Sequence = sequence
-
-	flatTree.UpdateBlockExt(*blockExt)
-	flatTree.UpdateBlockExt(*nextBlockExt)
+	flatTree.MoveDown(blockID)
 
 	b.blocks = flatTree.ToBlocks()
 

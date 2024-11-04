@@ -24,29 +24,33 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 
 	flatTree := NewFlatTree(b.blocks)
 
-	blockExt := flatTree.FindBlockExt(blockID)
+	blockExt := flatTree.Find(blockID)
 
 	if intoPrevious {
-		previousBlockExt := flatTree.FindPreviousBlockExt(*blockExt)
+		previous := flatTree.FindPreviousSibling(blockExt.ID)
 
-		if previousBlockExt == nil {
+		if previous == nil {
 			return b.ToHTML()
 		}
 
-		blockExt.ParentID = previousBlockExt.ID
+		newBlockExt := flatTree.Clone(*blockExt)
+
+		flatTree.Remove(blockExt.ID)
+		flatTree.Add(previous.ID, newBlockExt)
 	}
 
 	if intoNext {
-		nextBlockExt := flatTree.FindNextBlockExt(*blockExt)
+		next := flatTree.FindNextSibling(blockExt.ID)
 
-		if nextBlockExt == nil {
+		if next == nil {
 			return b.ToHTML()
 		}
 
-		blockExt.ParentID = nextBlockExt.ID
-	}
+		newBlockExt := flatTree.Clone(*blockExt)
 
-	flatTree.UpdateBlockExt(*blockExt)
+		flatTree.Remove(blockExt.ID)
+		flatTree.Add(next.ID, newBlockExt)
+	}
 
 	b.blocks = flatTree.ToBlocks()
 

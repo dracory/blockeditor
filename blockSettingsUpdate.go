@@ -17,9 +17,9 @@ func (b *editor) blockSettingsUpdate(r *http.Request) string {
 	}
 
 	flatTree := NewFlatTree(b.blocks)
-	blockExt := flatTree.FindBlockExt(blockID)
+	flatBlock := flatTree.Find(blockID)
 
-	if blockExt == nil {
+	if flatBlock == nil {
 		return "no block found"
 	}
 
@@ -40,10 +40,10 @@ func (b *editor) blockSettingsUpdate(r *http.Request) string {
 	}
 
 	if len(settings) > 0 {
-		blockExt.Parameters = settings
+		flatBlock.Parameters = settings
 	}
 
-	flatTree.UpdateBlockExt(*blockExt)
+	flatTree.Update(*flatBlock)
 	b.blocks = flatTree.ToBlocks()
 
 	// content := lo.ValueOr(settings, "content", "")

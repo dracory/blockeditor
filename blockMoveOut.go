@@ -16,19 +16,19 @@ func (b *editor) blockMoveOut(r *http.Request) string {
 
 	flatTree := NewFlatTree(b.blocks)
 
-	blockExt := flatTree.FindBlockExt(blockID)
-	parentBlockExt := flatTree.FindBlockExt(blockExt.ParentID)
+	block := flatTree.Find(blockID)
 
-	if parentBlockExt == nil {
+	if block == nil {
 		return b.ToHTML()
 	}
 
-	children := flatTree.Children(parentBlockExt.ParentID)
+	parent := flatTree.Parent(block.ID)
 
-	blockExt.ParentID = parentBlockExt.ParentID
-	blockExt.Sequence = len(children)
+	if parent == nil {
+		return b.ToHTML()
+	}
 
-	flatTree.UpdateBlockExt(*blockExt)
+	flatTree.MoveToParent(block.ID, parent.ParentID)
 
 	b.blocks = flatTree.ToBlocks()
 

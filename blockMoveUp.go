@@ -15,23 +15,7 @@ func (b *editor) blockMoveUp(r *http.Request) string {
 	}
 
 	flatTree := NewFlatTree(b.blocks)
-
-	blockExt := flatTree.FindBlockExt(blockID)
-	previousBlockExt := flatTree.FindPreviousBlockExt(*blockExt)
-
-	if previousBlockExt == nil {
-		return b.ToHTML()
-	}
-
-	previousSequence := previousBlockExt.Sequence
-	sequence := blockExt.Sequence
-
-	blockExt.Sequence = previousSequence
-	previousBlockExt.Sequence = sequence
-
-	flatTree.UpdateBlockExt(*blockExt)
-	flatTree.UpdateBlockExt(*previousBlockExt)
-
+	flatTree.MoveUp(blockID)
 	b.blocks = flatTree.ToBlocks()
 
 	return b.ToHTML()

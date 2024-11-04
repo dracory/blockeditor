@@ -19,14 +19,14 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 		return "no block id"
 	}
 
-	blockExt := NewFlatTree(b.blocks).FindBlockExt(blockID)
+	flatBlock := NewFlatTree(b.blocks).Find(blockID)
 
-	if blockExt == nil {
+	if flatBlock == nil {
 		return "no block found"
 	}
 
 	definition, found := lo.Find(b.blockDefinitions, func(d BlockDefinition) bool {
-		return d.Type == blockExt.Type
+		return d.Type == flatBlock.Type
 	})
 
 	fields := lo.If(found, definition.Fields).Else([]form.Field{})
@@ -39,7 +39,7 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 		}
 
 		// calculate the value before adding the prefix
-		f.Value = blockExt.Parameters[f.Name]
+		f.Value = flatBlock.Parameters[f.Name]
 
 		// add prefix to not conflict with other form fields (i.e. content)
 		f.Name = SETTINGS_PREFIX + f.Name

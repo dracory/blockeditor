@@ -1,8 +1,8 @@
 package blockeditor
 
-func (b *editor) findBlockByID(blockID string) *BlockExt {
+func (b *editor) findBlockByID(blockID string) *FlatBlock {
 	flatTree := NewFlatTree(b.blocks)
-	blockExt := flatTree.FindBlockExt(blockID)
+	blockExt := flatTree.Find(blockID)
 
 	if blockExt == nil {
 		return nil
