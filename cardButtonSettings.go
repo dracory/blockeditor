@@ -18,6 +18,7 @@ func (b *editor) cardButtonSettings(blockID string) *hb.Tag {
 			ACTION:                  ACTION_BLOCK_SETTINGS,
 			BLOCK_ID:                blockID,
 		})).
+		HxInclude(`#` + b.id).
 		HxTarget(`body`).
 		HxSwap(`beforeend`)
 

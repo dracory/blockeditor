@@ -6,7 +6,6 @@ import (
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/ui"
 	"github.com/samber/lo"
-	"github.com/spf13/cast"
 )
 
 var _ hb.TagInterface = (*editor)(nil)
@@ -23,12 +22,6 @@ type editor struct {
 	blockDefinitions []BlockDefinition
 }
 
-// func (b *editor) availableTypes() []string {
-// 	return lo.Map(b.blockDefinitions, func(blockDefinition BlockDefinition, _ int) string {
-// 		return blockDefinition.Type
-// 	})
-// }
-
 func (b *editor) ToHTML() string {
 	blocksJSON, err := ui.BlocksToJson(b.blocks)
 
@@ -37,7 +30,7 @@ func (b *editor) ToHTML() string {
 	}
 
 	editor := hb.Div().
-		Style("border:1px solid silver; padding:10px").
+		// Style("border:1px solid silver; padding:10px").
 		ChildIf(len(b.blocks) < 1, b.buttonBlockInsert("", 0, true)).
 		HTMLIf(len(b.blocks) > 0, b.blocksToCards(b.blocks))
 
@@ -56,6 +49,10 @@ func (b *editor) ToHTML() string {
 	wrapperID := b.id + "_wrapper"
 
 	style := `
+#` + wrapperID + ` {
+   text-align: left;
+ }
+
  #` + wrapperID + ` .BlockOptions .dropdown-toggle:after {
    content: none;
  }
@@ -98,54 +95,6 @@ func (b *editor) ToHTML() string {
 			Child(textarea)).
 		ToHTML()
 }
-
-// buttonBlockInsert creates a dropdown button for inserting a new block
-//
-// The dropdown will list all of the available block types
-func (e *editor) buttonBlockInsert(parentID string, atPosition int, single bool) *hb.Tag {
-	link := e.url(map[string]string{
-		ACTION:                  ACTION_BLOCK_ADD_MODAL,
-		EDITOR_ID:               e.id,
-		EDITOR_NAME:             e.name,
-		EDITOR_HANDLER_ENDPOINT: e.handleEndpoint,
-		"parent_id":             parentID,
-		"at_position":           cast.ToString(atPosition),
-	})
-
-	button := hb.Button().
-		Class("ButtonBlockInsert btn btn-secondary btn-sm").
-		Style(`border-radius: 30px;z-index: 100`).
-		Type("button").
-		Child(hb.I().Class(`bi bi-plus-circle me-2`)).
-		TextIf(single, "add new block").
-		TextIf(!single, "insert new block").
-		HxPost(link).
-		HxTarget("#" + e.id + "_wrapper").
-		HxSwap(`beforeend`)
-
-	return button
-}
-
-// blockDivider creates a divider
-func (b *editor) blockDivider() *hb.Tag {
-	return hb.Div().
-		Class(`BlockSeparator`).
-		Style(`margin: 3px 0px;`).
-		Style(`clear:both; height:1px; position: relative;`).
-		Style(`display: flex; justify-content: center; align-items: center;`)
-}
-
-// blockFindByID finds a block by its ID
-// func (b *editor) blockFindByID(id string) ui.BlockInterface {
-
-// 	for _, block := range b.blocks {
-// 		if block.ID() == id {
-// 			return block
-// 		}
-// 	}
-
-// 	return nil
-// }
 
 // url returns the url for the editor handler
 //
