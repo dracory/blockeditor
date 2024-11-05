@@ -12,34 +12,34 @@ import "github.com/gouniverse/form"
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsHTML() []form.Field {
-	return []form.Field{
-		{
+func FieldsHTML() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>HTML Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "html_id",
 			Label: "HTML ID",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `Use this field to add an ID to the HTML element.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "html_class",
 			Label: "HTML Class",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `Use this field to add classes to the HTML element.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "html_style",
 			Label: "HTML Style",
 			Type:  form.FORM_FIELD_TYPE_TEXTAREA,
 			Help:  `Use this field to add inline styles to the HTML element.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
 
@@ -52,13 +52,13 @@ func FieldsHTML() []form.Field {
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsAlign() []form.Field {
-	return []form.Field{
-		{
+func FieldsAlign() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>Alignment Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "text_align",
 			Label: "Text Align",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -101,8 +101,8 @@ func FieldsAlign() []form.Field {
 					Key:   "unset",
 				},
 			},
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "vertical_align",
 			Label: "Vertical Align",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -133,11 +133,11 @@ func FieldsAlign() []form.Field {
 					Key:   "unset",
 				},
 			},
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
 
@@ -154,26 +154,25 @@ func FieldsAlign() []form.Field {
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsBackground() []form.Field {
-	return []form.Field{
-		{
+func FieldsBackground() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>Background Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "background_color",
 			Label: "Background Color",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The background color of the block, i.e. #000000.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "background_image_url",
 			Label: "Background Image URL",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The background image URL of the block, i.e. https://example.com/image.png.`,
-		},
-
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "background_attachment",
 			Label: "Background Attachment",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -212,8 +211,8 @@ func FieldsBackground() []form.Field {
 					Key:   "unset",
 				},
 			},
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "background_repeat",
 			Label: "Background Repeat",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -240,8 +239,8 @@ func FieldsBackground() []form.Field {
 					Key:   "no-repeat",
 				},
 			},
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "background_position",
 			Label: "Background Position",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -288,8 +287,8 @@ func FieldsBackground() []form.Field {
 					Key:   "unset",
 				},
 			},
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "background_size",
 			Label: "Background Size",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -328,11 +327,11 @@ func FieldsBackground() []form.Field {
 					Key:   "unset",
 				},
 			},
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
 
@@ -344,22 +343,22 @@ func FieldsBackground() []form.Field {
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsBorder() []form.Field {
-	return []form.Field{
-		{
+func FieldsBorder() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>Border Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "border",
 			Label: "Border",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The border of the block, i.e. 1px solid #000000.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
 
@@ -374,25 +373,25 @@ func FieldsBorder() []form.Field {
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsFont() []form.Field {
-	return []form.Field{
-		{
+func FieldsFont() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>Font Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "font_family",
 			Label: "Font Family",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The font family of the text.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "font_size",
 			Label: "Font Size",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The font size of the text i.e. 16px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "font_style",
 			Label: "Font Style",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -430,8 +429,8 @@ func FieldsFont() []form.Field {
 					Key:   "unset",
 				},
 			},
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "font_weight",
 			Label: "Font Weight",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
@@ -498,11 +497,11 @@ func FieldsFont() []form.Field {
 				},
 			},
 			Help: `The font weight of the text i.e. normal, bold, etc.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
 
@@ -517,40 +516,40 @@ func FieldsFont() []form.Field {
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsMargin() []form.Field {
-	return []form.Field{
-		{
+func FieldsMargin() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>Margin Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "margin_top",
 			Label: "Margin Top",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The margin top of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "margin_bottom",
 			Label: "Margin Bottom",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The margin bottom of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "margin_left",
 			Label: "Margin Left",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The margin left of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "margin_right",
 			Label: "Margin Right",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The margin right of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
 
@@ -565,40 +564,40 @@ func FieldsMargin() []form.Field {
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsPadding() []form.Field {
-	return []form.Field{
-		{
+func FieldsPadding() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>Padding Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "padding_top",
 			Label: "Padding Top",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The padding top of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "padding_bottom",
 			Label: "Padding Bottom",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The padding bottom of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "padding_left",
 			Label: "Padding Left",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The padding left of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "padding_right",
 			Label: "Padding Right",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The padding right of the block, i.e. 20px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
 
@@ -611,27 +610,27 @@ func FieldsPadding() []form.Field {
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsText() []form.Field {
-	return []form.Field{
-		{
+func FieldsText() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `<fieldset><legend>Text Settings</legend>`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "text_color",
 			Label: "Text Color",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The color of the text.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Name:  "line_height",
 			Label: "Line Height",
 			Type:  form.FORM_FIELD_TYPE_STRING,
 			Help:  `The line height of the text i.e. 16px.`,
-		},
-		{
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: `</fieldset>`,
-		},
+		}),
 	}
 }
