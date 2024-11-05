@@ -3,6 +3,7 @@ package blockeditor
 import (
 	"net/http"
 
+	"github.com/gouniverse/hb"
 	"github.com/gouniverse/utils"
 )
 
@@ -12,11 +13,25 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 	inSibling := utils.Req(r, "in_sibling", "")
 
 	if blockID == "" {
-		return "no block id"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No block id",
+			})).
+			Child(b).
+			ToHTML()
 	}
 
 	if inSibling == "" {
-		return "no in_sibling"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No sibling specifier",
+			})).
+			Child(b).
+			ToHTML()
 	}
 
 	intoNext := inSibling == "next"
@@ -30,26 +45,88 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 		previous := flatTree.FindPreviousSibling(blockExt.ID)
 
 		if previous == nil {
-			return b.ToHTML()
+			return hb.Wrap().
+				Child(hb.Swal(hb.SwalOptions{
+					Icon:  "error",
+					Title: "Error",
+					Text:  "No previous sibling found",
+				})).
+				Child(b).
+				ToHTML()
 		}
 
-		newBlockExt := flatTree.Clone(*blockExt)
+		definition := b.findDefinitionByType(previous.Type)
+
+		if definition == nil {
+			return hb.Wrap().
+				Child(hb.Swal(hb.SwalOptions{
+					Icon:  "error",
+					Title: "Error",
+					Text:  "Definition not found",
+				})).
+				Child(b).
+				ToHTML()
+		}
+
+		if !definition.AllowChildren {
+			return hb.Wrap().
+				Child(hb.Swal(hb.SwalOptions{
+					Icon:  "error",
+					Title: "Error",
+					Text:  "Definition does not allow children",
+				})).
+				Child(b).
+				ToHTML()
+		}
+
+		newBlock := flatTree.Clone(*blockExt)
 
 		flatTree.Remove(blockExt.ID)
-		flatTree.Add(previous.ID, newBlockExt)
+		flatTree.Add(previous.ID, newBlock)
 	}
 
 	if intoNext {
 		next := flatTree.FindNextSibling(blockExt.ID)
 
 		if next == nil {
-			return b.ToHTML()
+			return hb.Wrap().
+				Child(hb.Swal(hb.SwalOptions{
+					Icon:  "error",
+					Title: "Error",
+					Text:  "No next sibling found",
+				})).
+				Child(b).
+				ToHTML()
 		}
 
-		newBlockExt := flatTree.Clone(*blockExt)
+		definition := b.findDefinitionByType(next.Type)
+
+		if definition == nil {
+			return hb.Wrap().
+				Child(hb.Swal(hb.SwalOptions{
+					Icon:  "error",
+					Title: "Error",
+					Text:  "Definition not found",
+				})).
+				Child(b).
+				ToHTML()
+		}
+
+		if !definition.AllowChildren {
+			return hb.Wrap().
+				Child(hb.Swal(hb.SwalOptions{
+					Icon:  "error",
+					Title: "Error",
+					Text:  "Definition does not allow children",
+				})).
+				Child(b).
+				ToHTML()
+		}
+
+		newBlock := flatTree.Clone(*blockExt)
 
 		flatTree.Remove(blockExt.ID)
-		flatTree.Add(next.ID, newBlockExt)
+		flatTree.Add(next.ID, newBlock)
 	}
 
 	b.blocks = flatTree.ToBlocks()

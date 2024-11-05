@@ -2,7 +2,7 @@ package blockeditor
 
 import "github.com/gouniverse/form"
 
-// FieldsCommon is a predefined set of fields common to all HTML elements
+// FieldsHTML is a predefined set of fields common to all HTML elements
 // - HTML ID (html_id)
 // - HTML Class (html_class)
 // - HTML Style (html_style)
@@ -12,8 +12,12 @@ import "github.com/gouniverse/form"
 //
 // Returns:
 // - []form.Field - The fields
-func FieldsBasic() []form.Field {
+func FieldsHTML() []form.Field {
 	return []form.Field{
+		{
+			Type:  form.FORM_FIELD_TYPE_RAW,
+			Value: `<fieldset><legend>HTML Settings</legend>`,
+		},
 		{
 			Name:  "html_id",
 			Label: "HTML ID",
@@ -31,6 +35,10 @@ func FieldsBasic() []form.Field {
 			Label: "HTML Style",
 			Type:  form.FORM_FIELD_TYPE_TEXTAREA,
 			Help:  `Use this field to add inline styles to the HTML element.`,
+		},
+		{
+			Type:  form.FORM_FIELD_TYPE_RAW,
+			Value: `</fieldset>`,
 		},
 	}
 }

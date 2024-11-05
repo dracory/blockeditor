@@ -8,21 +8,17 @@ import (
 
 // blockToCard creates a card for a block
 func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
-	// blockExt := b.findBlockByID(block.ID())
-
 	buttonMoveUp := b.cardButtonMoveUp(block.ID())
 	buttonMoveDown := b.cardButtonMoveDown(block.ID())
 	buttonEdit := b.cardButtonSettings(block.ID())
 	buttonDelete := b.cardButtonDelete(block.ID())
 	buttonDropdown := b.cardButtonDropdown(block)
 
-	definition, found := lo.Find(b.blockDefinitions, func(blockDefinition BlockDefinition) bool {
-		return blockDefinition.Type == block.Type()
-	})
+	definition := b.findDefinitionByType(block.Type())
 
 	hasRenderer := false
 
-	if found {
+	if definition != nil {
 		hasRenderer = definition.ToHTML != nil
 	}
 

@@ -18,6 +18,7 @@ func (b *editor) cardButtonDelete(blockID string) *hb.Tag {
 			ACTION:                  ACTION_BLOCK_DELETE,
 			BLOCK_ID:                blockID,
 		})).
+		HxInclude(`#` + b.id).
 		HxTarget(`#` + b.id + `_wrapper`).
 		HxSwap(`outerHTML`)
 

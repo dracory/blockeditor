@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gouniverse/hb"
 	"github.com/gouniverse/ui"
 	"github.com/gouniverse/utils"
 )
@@ -15,17 +16,38 @@ func (b *editor) blockAdd(r *http.Request) string {
 	parentID := utils.Req(r, "parent_id", "")
 
 	if blockType == "" {
-		return "no block type"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No block type",
+			})).
+			Child(b).
+			ToHTML()
 	}
 
 	if atPosition == "" {
-		return "no position"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No position",
+			})).
+			Child(b).
+			ToHTML()
 	}
 
 	atPositionInt, err := strconv.Atoi(atPosition)
 
 	if err != nil {
-		return err.Error()
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  err.Error(),
+			})).
+			Child(b).
+			ToHTML()
 	}
 
 	blockNew := ui.NewBlock()

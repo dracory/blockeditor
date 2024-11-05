@@ -8,7 +8,10 @@ import (
 )
 
 func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
-	blockExt := NewFlatTree(b.blocks).Find(block.ID())
+	flatBlock := NewFlatTree(b.blocks).Find(block.ID())
+	definition := b.findDefinitionByType(flatBlock.Type)
+
+	areChildrenAllowed := lo.TernaryF(definition == nil, func() bool { return false }, func() bool { return definition.AllowChildren })
 
 	position := lo.IndexOf(b.blocks, block)
 
@@ -23,7 +26,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 			Child(hb.I().Class(`bi bi-three-dots-vertical`).Style(`font-size: 10px;`))).
 		Child(hb.UL().
 			Class("dropdown-menu").
-			Child(func() hb.TagInterface {
+			ChildIf(areChildrenAllowed, func() hb.TagInterface {
 				// Add child
 				link := b.url(map[string]string{
 					ACTION:                  ACTION_BLOCK_ADD_MODAL,
@@ -39,13 +42,14 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 					Child(hb.I().Class(`bi bi-plus-circle me-2`)).
 					Text("Add child").
 					HxPost(link).
+					HxInclude("#" + b.id).
 					HxTarget("#" + b.id + "_wrapper").
 					HxSwap(`beforeend`)
 
 				return hb.LI().
 					Child(dropdownItem)
 			}()).
-			Child(hb.Div().Class("dropdown-divider")).
+			ChildIf(areChildrenAllowed, hb.Div().Class("dropdown-divider")).
 			Child(func() hb.TagInterface {
 				// Insert sibling before
 				link := b.url(map[string]string{
@@ -62,6 +66,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 					Child(hb.I().Class(`bi bi-arrow-90deg-right me-2`)).
 					Text("Insert sibling before").
 					HxPost(link).
+					HxInclude("#" + b.id).
 					HxTarget("#" + b.id + "_wrapper").
 					HxSwap(`beforeend`)
 
@@ -84,6 +89,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 					Child(hb.I().Class(`bi bi-arrow-return-right me-2`)).
 					Text("Insert sibling after").
 					HxPost(link).
+					HxInclude("#" + b.id).
 					HxTarget("#" + b.id + "_wrapper").
 					HxSwap(`beforeend`)
 
@@ -107,6 +113,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 					Child(hb.I().Class(`bi bi-arrow-up-right-square me-2`)).
 					Text("Move into previous sibling").
 					HxPost(link).
+					HxInclude("#" + b.id).
 					HxTarget("#" + b.id + "_wrapper").
 					HxSwap(`outerHTML`)
 
@@ -129,14 +136,15 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 					Child(hb.I().Class(`bi bi-arrow-down-right-square me-2`)).
 					Text("Move into next sibling").
 					HxPost(link).
+					HxInclude("#" + b.id).
 					HxTarget("#" + b.id + "_wrapper").
 					HxSwap(`outerHTML`)
 
 				return hb.LI().
 					Child(dropdownItem)
 			}()).
-			ChildIf(blockExt.ParentID != "", hb.Div().Class("dropdown-divider")).
-			ChildIf(blockExt.ParentID != "", func() hb.TagInterface {
+			ChildIf(flatBlock.ParentID != "", hb.Div().Class("dropdown-divider")).
+			ChildIf(flatBlock.ParentID != "", func() hb.TagInterface {
 				// Move into previous sibling
 				link := b.url(map[string]string{
 					ACTION:                  ACTION_BLOCK_MOVE_OUT,
@@ -151,6 +159,7 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 					Child(hb.I().Class(`bi bi-arrow-down-left-square me-2`)).
 					Text("Move out of parent block").
 					HxPost(link).
+					HxInclude("#" + b.id).
 					HxTarget("#" + b.id + "_wrapper").
 					HxSwap(`outerHTML`)
 

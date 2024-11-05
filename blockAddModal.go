@@ -26,7 +26,7 @@ func (e *editor) blockAddModal(r *http.Request) string {
 	definition := e.findDefinitionByID(parentID)
 
 	allowedTypes := lo.IfF(definition != nil, func() []string {
-		return definition.AllowedChildren
+		return definition.AllowedChildTypes
 	}).Else([]string{})
 
 	allowedDefinitions := lo.IfF(len(allowedTypes) > 0, func() []BlockDefinition {

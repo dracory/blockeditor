@@ -7,11 +7,5 @@ func (b *editor) findDefinitionByID(blockID string) *BlockDefinition {
 		return nil
 	}
 
-	for _, blockDefinition := range b.blockDefinitions {
-		if blockDefinition.Type == block.Type {
-			return &blockDefinition
-		}
-	}
-
-	return nil
+	return b.findDefinitionByType(block.Type)
 }

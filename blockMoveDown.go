@@ -3,6 +3,7 @@ package blockeditor
 import (
 	"net/http"
 
+	"github.com/gouniverse/hb"
 	"github.com/gouniverse/utils"
 )
 
@@ -11,7 +12,14 @@ func (b *editor) blockMoveDown(r *http.Request) string {
 	blockID := utils.Req(r, BLOCK_ID, "")
 
 	if blockID == "" {
-		return "no block id"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No block id",
+			})).
+			Child(b).
+			ToHTML()
 	}
 
 	flatTree := NewFlatTree(b.blocks)

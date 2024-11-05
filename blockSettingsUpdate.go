@@ -13,21 +13,29 @@ func (b *editor) blockSettingsUpdate(r *http.Request) string {
 	blockID := utils.Req(r, BLOCK_ID, "")
 
 	if blockID == "" {
-		return "no block id"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No block id",
+			})).
+			Child(b).
+			ToHTML()
 	}
 
 	flatTree := NewFlatTree(b.blocks)
 	flatBlock := flatTree.Find(blockID)
 
 	if flatBlock == nil {
-		return "no block found"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No block found",
+			})).
+			Child(b).
+			ToHTML()
 	}
-
-	// block := b.blockFindByID(blockID)
-
-	// if block == nil {
-	// 	return "no block found"
-	// }
 
 	all := utils.ReqAll(r)
 	settings := map[string]string{}
@@ -45,16 +53,6 @@ func (b *editor) blockSettingsUpdate(r *http.Request) string {
 
 	flatTree.Update(*flatBlock)
 	b.blocks = flatTree.ToBlocks()
-
-	// content := lo.ValueOr(settings, "content", "")
-
-	// block.SetContent(content)
-
-	// for i := 0; i < len(b.blocks); i++ {
-	// 	if b.blocks[i].ID() == blockID {
-	// 		b.blocks[i] = block
-	// 	}
-	// }
 
 	modalCloseScript := `document.getElementById('ModalBlockUpdate').remove();document.getElementById('ModalBackdrop').remove();`
 	return b.ToHTML() + hb.Script(modalCloseScript).ToHTML()

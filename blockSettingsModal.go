@@ -16,22 +16,30 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 	blockID := utils.Req(r, BLOCK_ID, "")
 
 	if blockID == "" {
-		return "no block id"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No block id",
+			})).
+			ToHTML()
 	}
 
 	block := NewFlatTree(b.blocks).Find(blockID)
 
 	if block == nil {
-		return "no block found"
+		return hb.Wrap().
+			Child(hb.Swal(hb.SwalOptions{
+				Icon:  "error",
+				Title: "Error",
+				Text:  "No block found",
+			})).
+			ToHTML()
 	}
 
-	definition, found := lo.Find(b.blockDefinitions, func(d BlockDefinition) bool {
-		return d.Type == block.Type
-	})
+	definition := b.findDefinitionByType(block.Type)
 
-	fields := lo.If(found, definition.Fields).Else([]form.Field{})
-
-	// fields = b.settingFields(fields)
+	fields := lo.If(definition != nil, definition.Fields).Else([]form.Field{})
 
 	fieldsWithPrefix := lo.Map(fields, func(f form.Field, _ int) form.Field {
 		if f.Type == form.FORM_FIELD_TYPE_RAW {
@@ -92,10 +100,11 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 
 	modal := bs.Modal().
 		ID("ModalBlockUpdate").
-		Class("fade show modal-lg").
+		Class("fade show modal-xl").
 		Style(`display:block;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1051;`).
 		Children([]hb.TagInterface{
 			bs.ModalDialog().
+				Class("modal-dialog").
 				Children([]hb.TagInterface{
 					bs.ModalContent().Children([]hb.TagInterface{
 						bs.ModalHeader().Children([]hb.TagInterface{
@@ -111,7 +120,7 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 
 						bs.ModalBody().
 							Child(hb.NewDiv().
-								Style("height: 300px; overflow-y: auto; pading-right: 5px;").
+								Style("height: 600px; overflow-y: auto; pading-right: 5px;").
 								Child(hb.NewDiv().
 									Class(`alert alert-info`).
 									Style("font-size: 16px;").
@@ -138,6 +147,26 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 		Style("display:block;")
 
 	return hb.Wrap().Children([]hb.TagInterface{
+		hb.Style(`
+#ModalBlockUpdate fieldset {
+	border: 1px solid #ced4da;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 20px;
+	background-color: honeydew;
+}
+
+#ModalBlockUpdate fieldset legend {
+	float: none;
+	width: auto;
+	font-weight: bold;
+	font-size: 24px;
+	padding: 0 10px;
+	border: 1px solid #ced4da;
+	border-radius: 10px;
+	background-color: aliceblue;
+}
+`),
 		modal,
 		backdrop,
 	}).ToHTML()

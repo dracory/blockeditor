@@ -17,6 +17,7 @@ func (b *editor) cardButtonMoveUp(blockID string) *hb.Tag {
 			ACTION:                  ACTION_BLOCK_MOVE_UP,
 			BLOCK_ID:                blockID,
 		})).
+		HxInclude(`#` + b.id).
 		HxTarget(`#` + b.id + `_wrapper`).
 		HxSwap(`outerHTML`)
 
