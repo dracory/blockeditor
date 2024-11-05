@@ -14,7 +14,7 @@ type BlockDefinition struct {
 	Type string
 
 	// Fields are the fields for the paameters of the block which can be edited
-	Fields []form.Field
+	Fields []form.FieldInterface
 
 	// AllowChildren determines if the block can have children
 	AllowChildren bool

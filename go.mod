@@ -2,9 +2,11 @@ module github.com/gouniverse/blockeditor
 
 go 1.23
 
+// replace github.com/gouniverse/form => ../modules/form
+
 require (
 	github.com/gouniverse/bs v0.13.0
-	github.com/gouniverse/form v0.6.0
+	github.com/gouniverse/form v0.10.0
 	github.com/gouniverse/hb v1.78.0
 	github.com/gouniverse/ui v0.9.0
 	github.com/gouniverse/uid v1.5.0

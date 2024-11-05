@@ -39,18 +39,18 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 
 	definition := b.findDefinitionByType(block.Type)
 
-	fields := lo.If(definition != nil, definition.Fields).Else([]form.Field{})
+	fields := lo.If(definition != nil, definition.Fields).Else([]form.FieldInterface{})
 
-	fieldsWithPrefix := lo.Map(fields, func(f form.Field, _ int) form.Field {
-		if f.Type == form.FORM_FIELD_TYPE_RAW {
+	fieldsWithPrefix := lo.Map(fields, func(f form.FieldInterface, _ int) form.FieldInterface {
+		if f.GetType() == form.FORM_FIELD_TYPE_RAW {
 			return f
 		}
 
 		// calculate the value before adding the prefix
-		f.Value = block.Parameters[f.Name]
+		f.SetValue(block.Parameters[f.GetName()])
 
 		// add prefix to not conflict with other form fields (i.e. content)
-		f.Name = SETTINGS_PREFIX + f.Name
+		f.SetName(SETTINGS_PREFIX + f.GetName())
 		return f
 	})
 
@@ -64,7 +64,7 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 		return err.Error()
 	}
 
-	blockForm.AddField(form.Field{
+	blockForm.AddField(&form.Field{
 		Name:      b.name,
 		Label:     "Editor Blocks",
 		Type:      form.FORM_FIELD_TYPE_TEXTAREA,
