@@ -26,6 +26,10 @@ go get -u github.com/gouniverse/blockeditor
 
 ## Screenshots
 
+- simple sequential blocks
+
 <img src="./screenshots/screenshot-1.png" />
+
+- nested blocks
 
 <img src="./screenshots/screenshot-2.png" />
