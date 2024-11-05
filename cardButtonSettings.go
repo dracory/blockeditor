@@ -11,6 +11,7 @@ func (b *editor) cardButtonSettings(blockID string) *hb.Tag {
 		Style(`padding: 2px 2px; line-height: 1;`).
 		Type("button").
 		Child(icon).
+		Title("Settings").
 		HxPost(b.url(map[string]string{
 			EDITOR_ID:               b.id,
 			EDITOR_NAME:             b.name,

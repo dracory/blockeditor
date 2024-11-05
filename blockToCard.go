@@ -36,7 +36,7 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 			hb.Div().
 				Class(`card-header bg-info`).
 				Style(`--bs-bg-opacity: 0.2;`).
-				Style(`padding: 2px 10px;font-size: 11px;`).
+				Style(`padding: 8px 10px; font-size: 12px; text-transform: uppercase; font-weight: bold;letter-spacing: 2px;`).
 				Child(buttonDropdown).
 				Text(block.Type()).
 				Child(buttonDelete).

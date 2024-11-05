@@ -62,7 +62,7 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 				Child(hb.Swal(hb.SwalOptions{
 					Icon:  "error",
 					Title: "Error",
-					Text:  "Definition not found",
+					Text:  "Previous block definition not found",
 				})).
 				Child(b).
 				ToHTML()
@@ -73,7 +73,7 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 				Child(hb.Swal(hb.SwalOptions{
 					Icon:  "error",
 					Title: "Error",
-					Text:  "Definition does not allow children",
+					Text:  "Previous block definition does not allow children",
 				})).
 				Child(b).
 				ToHTML()
@@ -106,7 +106,7 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 				Child(hb.Swal(hb.SwalOptions{
 					Icon:  "error",
 					Title: "Error",
-					Text:  "Definition not found",
+					Text:  "Next block definition not found",
 				})).
 				Child(b).
 				ToHTML()
@@ -117,7 +117,7 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 				Child(hb.Swal(hb.SwalOptions{
 					Icon:  "error",
 					Title: "Error",
-					Text:  "Definition does not allow children",
+					Text:  "Next block definition does not allow children",
 				})).
 				Child(b).
 				ToHTML()

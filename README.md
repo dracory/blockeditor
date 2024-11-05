@@ -11,6 +11,10 @@ This project is licensed under the GNU Affero General Public License v3.0 (AGPL-
 
 For commercial use, please use my [contact page](https://lesichkov.co.uk/contact) to obtain a commercial license.
 
+## Status
+
+The status of this project is "work in progress", "multiple changes", "avoid at the minute", "nothing stable".
+
 ## Introduction
 
 This package allows to build user interfaces based on blocks.
