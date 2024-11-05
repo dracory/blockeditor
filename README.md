@@ -23,3 +23,7 @@ This package allows to build user interfaces based on blocks.
 ```
 go get -u github.com/gouniverse/blockeditor
 ```
+
+## Screenshots
+
+<img src="./screenshots/screenshot-1.png" />
