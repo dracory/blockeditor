@@ -27,3 +27,5 @@ go get -u github.com/gouniverse/blockeditor
 ## Screenshots
 
 <img src="./screenshots/screenshot-1.png" />
+
+<img src="./screenshots/screenshot-2.png" />
