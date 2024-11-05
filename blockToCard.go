@@ -16,19 +16,20 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 
 	definition := b.findDefinitionByType(block.Type())
 
-	hasRenderer := false
+	tag := hb.NewTag("center").
+		Child(definition.Icon).
+		Style("font-size: 40px;")
 
-	if definition != nil {
-		hasRenderer = definition.ToHTML != nil
+	if definition.ToTag != nil {
+		tag = definition.ToTag(block)
 	}
 
-	render := lo.IfF(hasRenderer, func() string {
-		return definition.ToHTML(block)
-	}).ElseF(func() string {
-		return hb.NewTag("center").
-			Child(definition.Icon).
-			Style("font-size: 40px;").ToHTML()
-	})
+	if len(block.Children()) > 0 {
+		tag = hb.NewWrap()
+		tag.Children(lo.Map(block.Children(), func(child ui.BlockInterface, _ int) hb.TagInterface {
+			return b.blockToCard(child)
+		}))
+	}
 
 	card := hb.Div().
 		Class(`BlockCard card`).
@@ -46,29 +47,22 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 		).
 		Child(hb.Div().
 			Class(`card-body bg-info`).
-			ClassIf(block.Type() == "row", `row`).
+			//ClassIf(block.Type() == "row", `row`).
 			Style(`--bs-bg-opacity: 0.1;`).
-			// ChildIf(len(block.Children()) < 1, b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, 0, false))).
-			ChildrenIfF(len(block.Children()) > 0, func() []hb.TagInterface {
-				return lo.Map(block.Children(), func(child ui.BlockInterface, position int) hb.TagInterface {
-					return hb.Wrap().
-						// Child(b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, position, false))).
-						Child(b.blockToCard(child))
-				})
-			}).
-			// ChildIf(len(block.Children()) > 0, b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, len(block.Children()), false))).
-			HTMLIf(len(block.Children()) < 1, render))
+			Child(tag))
+		// ChildIf(len(block.Children()) < 1, b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, 0, false))).
+		// ChildrenIfF(len(block.Children()) > 0, func() []hb.TagInterface {
+		// 	return lo.Map(block.Children(), func(child ui.BlockInterface, position int) hb.TagInterface {
+		// 		return hb.Wrap().
+		// 			// Child(b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, position, false))).
+		// 			Child(b.blockToCard(child))
+		// 	})
+		// }).
+		// ChildIf(len(block.Children()) > 0, b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, len(block.Children()), false))).
+		// HTMLIf(len(block.Children()) < 1, render))
 
-	if block.Type() == "column" {
-		width := block.Parameter("width")
-
-		if width == "" {
-			width = "12"
-		}
-
-		return hb.Div().
-			Class("col-" + width).
-			Child(card)
+	if definition.Wrapper != nil {
+		return definition.Wrapper(block).Child(card)
 	}
 
 	return card
