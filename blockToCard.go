@@ -25,7 +25,9 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 	}
 
 	if len(block.Children()) > 0 {
-		tag = hb.NewWrap()
+		if definition.ToTag == nil {
+			tag = hb.NewWrap()
+		}
 		tag.Children(lo.Map(block.Children(), func(child ui.BlockInterface, _ int) hb.TagInterface {
 			return b.blockToCard(child)
 		}))
