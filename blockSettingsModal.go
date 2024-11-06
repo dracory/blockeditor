@@ -8,7 +8,6 @@ import (
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/ui"
 	"github.com/gouniverse/utils"
-	"github.com/mingrammer/cfmt"
 	"github.com/samber/lo"
 )
 
@@ -44,19 +43,21 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 
 	fieldsWithPrefix := lo.Map(fields, func(f form.FieldInterface, _ int) form.FieldInterface {
 		fieldName := f.GetName()
-		fieldValue := block.Parameters[fieldName]
-		settingsFieldName := prefixKey(fieldName, SETTINGS_PREFIX)
-
-		cfmt.Warningln("fieldName: ", fieldName)
-		cfmt.Warningln("settingsFieldName: ", settingsFieldName)
-		cfmt.Warningln("fieldValue: ", fieldValue)
 
 		newField := form.NewField(form.FieldOptions{})
-		newField.SetName(settingsFieldName)
+		if f.GetType() != form.FORM_FIELD_TYPE_RAW {
+			settingsFieldName := prefixKey(fieldName, SETTINGS_PREFIX)
+			newField.SetName(settingsFieldName)
+		}
 		newField.SetLabel(f.GetLabel())
 		newField.SetType(f.GetType())
 		newField.SetHelp(f.GetHelp())
-		newField.SetValue(fieldValue)
+		if f.GetType() == form.FORM_FIELD_TYPE_RAW {
+			newField.SetValue(f.GetValue())
+		} else {
+			fieldValue := block.Parameters[fieldName]
+			newField.SetValue(fieldValue)
+		}
 		newField.SetOptions(f.GetOptions())
 		newField.SetOptionsF(f.GetOptionsF())
 		newField.SetRequired(f.GetRequired())
