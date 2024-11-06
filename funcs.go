@@ -2,25 +2,27 @@ package blockeditor
 
 import "strings"
 
-func decodeSettingKey(key string) string {
-	key = trimSettingKey(key)
+func unprefixKey(key string, prefix string) string {
+	key = trimPrefixedKey(key, prefix)
 	return key
 }
 
 // emcodeSettingKey prepares the setting key for the moodal form
 // to not conflict with any other field names
-func encodeSettingKey(key string) string {
-	key = trimSettingKey(key)
-	return SETTINGS_PREFIX + key
+func prefixKey(key string, prefix string) string {
+	key = trimPrefixedKey(key, prefix)
+	return prefix + key
 }
 
-func isSettingKey(key string) bool {
-	return strings.HasPrefix(key, SETTINGS_PREFIX)
+func isPrefixedKey(key string, prefix string) bool {
+	return strings.HasPrefix(key, prefix)
 }
 
-func trimSettingKey(key string) string {
-	for strings.HasPrefix(key, SETTINGS_PREFIX) {
-		key = strings.TrimPrefix(key, SETTINGS_PREFIX)
+// trimSettingKey removes the settings prefix
+// repeatedly until the key is no longer prefixed
+func trimPrefixedKey(key string, prefix string) string {
+	for strings.HasPrefix(key, prefix) {
+		key = strings.TrimPrefix(key, prefix)
 	}
 	return key
 }

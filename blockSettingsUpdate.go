@@ -67,8 +67,8 @@ func (b *editor) findPostedSettings(r *http.Request) map[string]string {
 
 	for key, values := range all {
 		value := values[0]
-		if isSettingKey(key) {
-			origKey := decodeSettingKey(key)
+		if isPrefixedKey(key, SETTINGS_PREFIX) {
+			origKey := unprefixKey(key, SETTINGS_PREFIX)
 			settings[origKey] = value
 		}
 	}

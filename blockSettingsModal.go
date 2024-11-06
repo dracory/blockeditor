@@ -45,7 +45,7 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 	fieldsWithPrefix := lo.Map(fields, func(f form.FieldInterface, _ int) form.FieldInterface {
 		fieldName := f.GetName()
 		fieldValue := block.Parameters[fieldName]
-		settingsFieldName := encodeSettingKey(fieldName)
+		settingsFieldName := prefixKey(fieldName, SETTINGS_PREFIX)
 
 		cfmt.Warningln("fieldName: ", fieldName)
 		cfmt.Warningln("settingsFieldName: ", settingsFieldName)
