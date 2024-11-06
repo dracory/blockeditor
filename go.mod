@@ -6,11 +6,12 @@ go 1.23
 
 require (
 	github.com/gouniverse/bs v0.13.0
-	github.com/gouniverse/form v0.12.0
+	github.com/gouniverse/form v0.13.0
 	github.com/gouniverse/hb v1.78.0
 	github.com/gouniverse/ui v0.10.0
 	github.com/gouniverse/uid v1.5.0
 	github.com/gouniverse/utils v1.45.0
+	github.com/mingrammer/cfmt v1.1.0
 	github.com/samber/lo v1.47.0
 	github.com/spf13/cast v1.7.0
 )
@@ -33,7 +34,6 @@ require (
 	github.com/logrusorgru/aurora v2.0.3+incompatible // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mingrammer/cfmt v1.1.0 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	golang.org/x/crypto v0.28.0 // indirect
 	golang.org/x/mod v0.21.0 // indirect

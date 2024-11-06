@@ -8,6 +8,7 @@ import (
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/ui"
 	"github.com/gouniverse/utils"
+	"github.com/mingrammer/cfmt"
 	"github.com/samber/lo"
 )
 
@@ -42,16 +43,29 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 	fields := lo.If(definition != nil, definition.Fields).Else([]form.FieldInterface{})
 
 	fieldsWithPrefix := lo.Map(fields, func(f form.FieldInterface, _ int) form.FieldInterface {
-		if f.GetType() == form.FORM_FIELD_TYPE_RAW {
-			return f
+		fieldName := f.GetName()
+		fieldValue := block.Parameters[fieldName]
+		settingsFieldName := encodeSettingKey(fieldName)
+
+		cfmt.Warningln("fieldName: ", fieldName)
+		cfmt.Warningln("settingsFieldName: ", settingsFieldName)
+		cfmt.Warningln("fieldValue: ", fieldValue)
+
+		newField := form.NewField(form.FieldOptions{})
+		newField.SetName(settingsFieldName)
+		newField.SetLabel(f.GetLabel())
+		newField.SetType(f.GetType())
+		newField.SetHelp(f.GetHelp())
+		newField.SetValue(fieldValue)
+		newField.SetOptions(f.GetOptions())
+		newField.SetOptionsF(f.GetOptionsF())
+		newField.SetRequired(f.GetRequired())
+
+		if newField.GetType() == form.FORM_FIELD_TYPE_RAW {
+			return newField
 		}
 
-		// calculate the value before adding the prefix
-		f.SetValue(block.Parameters[f.GetName()])
-
-		// add prefix to not conflict with other form fields (i.e. content)
-		f.SetName(SETTINGS_PREFIX + f.GetName())
-		return f
+		return newField
 	})
 
 	blockForm := form.NewForm(form.FormOptions{
