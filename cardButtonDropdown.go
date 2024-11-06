@@ -15,6 +15,170 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 
 	position := lo.IndexOf(b.blocks, block)
 
+	urlMoveDown := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_DOWN,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+	})
+
+	linkMoveDown := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-down me-2`)).
+		Text("Move Down").
+		HxPost(urlMoveDown).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlMoveUp := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_UP,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+	})
+
+	linkMoveUp := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-up me-2`)).
+		Text("Move Up").
+		HxPost(urlMoveUp).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlAddChild := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_ADD_MODAL,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		"parent_id":             block.ID(),
+	})
+
+	linkAddChild := hb.Button().
+		Child(hb.I().Class(`bi bi-plus-circle me-2`)).
+		Text("Add Child").
+		HxPost(urlAddChild).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`beforeend`)
+
+	urlInsertBefore := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_ADD_MODAL,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+		"at_position":           cast.ToString(position),
+	})
+
+	linkInsertBefore := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-90deg-right me-2`)).
+		Text("Insert sibling before").
+		HxPost(urlInsertBefore).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`beforeend`)
+
+	urlInsertAfter := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_ADD_MODAL,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+		"at_position":           cast.ToString(position + 1),
+	})
+
+	linkInsertAfter := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-return-right me-2`)).
+		Text("Insert sibling after").
+		HxPost(urlInsertAfter).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`beforeend`)
+
+	urlMoveIntoPrevious := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_INTO,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+		"in_sibling":            "previous",
+	})
+
+	linkMoveIntoPrevious := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-up-right-square me-2`)).
+		Text("Move into previous").
+		HxPost(urlMoveIntoPrevious).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlMoveIntoNext := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_INTO,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+		"in_sibling":            "next",
+	})
+
+	linkMoveIntoNext := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-down-right-square me-2`)).
+		Text("Move into next").
+		HxPost(urlMoveIntoNext).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlMoveOut := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_OUT,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		"block_id":              block.ID(),
+	})
+
+	linkMoveOut := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-down-left-square me-2`)).
+		Text("Move out").
+		HxPost(urlMoveOut).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlDelete := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_DELETE,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+	})
+
+	linkDelete := hb.Button().
+		Child(hb.I().Class(`bi bi-trash me-2`)).
+		Text("Delete").
+		HxPost(urlDelete).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlSettings := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_SETTINGS,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+	})
+
+	linkSettings := hb.Button().
+		Child(hb.I().Class(`bi bi-gear me-2`)).
+		Text("Settings").
+		HxPost(urlSettings).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`beforeend`)
+
 	dropdown := hb.Div().
 		Class(`BlockOptions dropdown float-start me-2`).
 		Child(hb.Button().
@@ -26,146 +190,30 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 			Child(hb.I().Class(`bi bi-three-dots-vertical`).Style(`font-size: 10px;`))).
 		Child(hb.UL().
 			Class("dropdown-menu").
-			ChildIf(areChildrenAllowed, func() hb.TagInterface {
-				// Add child
-				link := b.url(map[string]string{
-					ACTION:                  ACTION_BLOCK_ADD_MODAL,
-					EDITOR_ID:               b.id,
-					EDITOR_NAME:             b.name,
-					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-					"parent_id":             block.ID(),
-					"at_position":           cast.ToString(position),
-				})
-				dropdownItem := hb.Hyperlink().
-					Class("dropdown-item").
-					Href(link).
-					Child(hb.I().Class(`bi bi-plus-circle me-2`)).
-					Text("Add child").
-					HxPost(link).
-					HxInclude("#" + b.id).
-					HxTarget("#" + b.id + "_wrapper").
-					HxSwap(`beforeend`)
-
-				return hb.LI().
-					Child(dropdownItem)
-			}()).
-			ChildIf(areChildrenAllowed, hb.Div().Class("dropdown-divider")).
-			Child(func() hb.TagInterface {
-				// Insert sibling before
-				link := b.url(map[string]string{
-					ACTION:                  ACTION_BLOCK_ADD_MODAL,
-					EDITOR_ID:               b.id,
-					EDITOR_NAME:             b.name,
-					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-					"parent_id":             "",
-					"at_position":           cast.ToString(position),
-				})
-				dropdownItem := hb.Hyperlink().
-					Class("dropdown-item").
-					Href(link).
-					Child(hb.I().Class(`bi bi-arrow-90deg-right me-2`)).
-					Text("Insert sibling before").
-					HxPost(link).
-					HxInclude("#" + b.id).
-					HxTarget("#" + b.id + "_wrapper").
-					HxSwap(`beforeend`)
-
-				return hb.LI().
-					Child(dropdownItem)
-			}()).
-			Child(func() hb.TagInterface {
-				// Insert sibling after
-				link := b.url(map[string]string{
-					ACTION:                  ACTION_BLOCK_ADD_MODAL,
-					EDITOR_ID:               b.id,
-					EDITOR_NAME:             b.name,
-					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-					"parent_id":             "",
-					"at_position":           cast.ToString(position + 1),
-				})
-				dropdownItem := hb.Hyperlink().
-					Class("dropdown-item").
-					Href(link).
-					Child(hb.I().Class(`bi bi-arrow-return-right me-2`)).
-					Text("Insert sibling after").
-					HxPost(link).
-					HxInclude("#" + b.id).
-					HxTarget("#" + b.id + "_wrapper").
-					HxSwap(`beforeend`)
-
-				return hb.LI().
-					Child(dropdownItem)
-			}()).
-			Child(hb.Div().Class("dropdown-divider")).
-			Child(func() hb.TagInterface {
-				// Move into previous sibling
-				link := b.url(map[string]string{
-					ACTION:                  ACTION_BLOCK_MOVE_INTO,
-					EDITOR_ID:               b.id,
-					EDITOR_NAME:             b.name,
-					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-					"block_id":              block.ID(),
-					"in_sibling":            "previous",
-				})
-				dropdownItem := hb.Hyperlink().
-					Class("dropdown-item").
-					Href(link).
-					Child(hb.I().Class(`bi bi-arrow-up-right-square me-2`)).
-					Text("Move into previous sibling").
-					HxPost(link).
-					HxInclude("#" + b.id).
-					HxTarget("#" + b.id + "_wrapper").
-					HxSwap(`outerHTML`)
-
-				return hb.LI().
-					Child(dropdownItem)
-			}()).
-			Child(func() hb.TagInterface {
-				// Move into next sibling
-				link := b.url(map[string]string{
-					ACTION:                  ACTION_BLOCK_MOVE_INTO,
-					EDITOR_ID:               b.id,
-					EDITOR_NAME:             b.name,
-					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-					"block_id":              block.ID(),
-					"in_sibling":            "next",
-				})
-				dropdownItem := hb.Hyperlink().
-					Class("dropdown-item").
-					Href(link).
-					Child(hb.I().Class(`bi bi-arrow-down-right-square me-2`)).
-					Text("Move into next sibling").
-					HxPost(link).
-					HxInclude("#" + b.id).
-					HxTarget("#" + b.id + "_wrapper").
-					HxSwap(`outerHTML`)
-
-				return hb.LI().
-					Child(dropdownItem)
-			}()).
+			ChildIf(areChildrenAllowed, hb.LI().Child(linkAddChild.Class("dropdown-item"))).
+			ChildIf(areChildrenAllowed, hb.Div().
+				Class("dropdown-divider")).
+			Child(hb.LI().Child(linkMoveUp.Class("dropdown-item"))).
+			Child(hb.LI().Child(linkMoveDown.Class("dropdown-item"))).
+			Child(hb.Div().
+				Class("dropdown-divider")).
+			Child(hb.LI().Child(linkInsertBefore.Class("dropdown-item"))).
+			Child(hb.LI().Child(linkInsertAfter.Class("dropdown-item"))).
+			Child(hb.Div().
+				Class("dropdown-divider")).
+			Child(hb.LI().Child(linkMoveIntoPrevious.Class("dropdown-item"))).
+			Child(hb.LI().Child(linkMoveIntoNext.Class("dropdown-item"))).
+			Child(hb.Div().
+				Class("dropdown-divider")).
 			ChildIf(flatBlock.ParentID != "", hb.Div().Class("dropdown-divider")).
-			ChildIf(flatBlock.ParentID != "", func() hb.TagInterface {
-				// Move into previous sibling
-				link := b.url(map[string]string{
-					ACTION:                  ACTION_BLOCK_MOVE_OUT,
-					EDITOR_ID:               b.id,
-					EDITOR_NAME:             b.name,
-					EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-					"block_id":              block.ID(),
-				})
-				dropdownItem := hb.Hyperlink().
-					Class("dropdown-item").
-					Href(link).
-					Child(hb.I().Class(`bi bi-arrow-down-left-square me-2`)).
-					Text("Move out of parent block").
-					HxPost(link).
-					HxInclude("#" + b.id).
-					HxTarget("#" + b.id + "_wrapper").
-					HxSwap(`outerHTML`)
-
-				return hb.LI().
-					Child(dropdownItem)
-			}()))
+			ChildIf(flatBlock.ParentID != "", hb.LI().Child(linkMoveOut.Class("dropdown-item"))).
+			Child(hb.Div().
+				Class("dropdown-divider")).
+			Child(hb.LI().Child(linkSettings.Class("dropdown-item"))).
+			Child(hb.Div().
+				Class("dropdown-divider")).
+			Child(hb.LI().Child(linkDelete.Class("dropdown-item"))),
+		)
 
 	return dropdown
 }

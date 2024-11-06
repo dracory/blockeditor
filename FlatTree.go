@@ -200,6 +200,40 @@ func (f *FlatTree) MoveToParent(flatBlockID string, parentID string) {
 	f.RecalculateSequences(parentID)
 }
 
+func (tree *FlatTree) MoveToPosition(flatBlockID string, parentID string, position int) {
+	tree.MoveToParent(flatBlockID, parentID)
+
+	block := tree.Find(flatBlockID)
+
+	if block == nil {
+		return
+	}
+
+	if block.Sequence == position {
+		return
+	}
+
+	if position < 0 {
+		return // position already at the top
+	}
+
+	if position > len(tree.Children(parentID)) {
+		return // position already at the bottom
+	}
+
+	if block.Sequence < position {
+		// move down
+		for i := block.Sequence; i < position; i++ {
+			tree.MoveDown(flatBlockID)
+		}
+	} else {
+		// move up
+		for i := block.Sequence; i > position; i-- {
+			tree.MoveUp(flatBlockID)
+		}
+	}
+}
+
 func (f *FlatTree) MoveUp(flatBlockID string) {
 	block := f.Find(flatBlockID)
 
@@ -245,13 +279,20 @@ func (f *FlatTree) RecalculateSequences(blockID string) {
 }
 
 func (f *FlatTree) Remove(flatBlockID string) {
+	flatBlock := f.Find(flatBlockID)
+
+	if flatBlock == nil {
+		return
+	}
+
+	parentID := flatBlock.ParentID
 	for i, ext := range f.list {
 		if ext.ID == flatBlockID {
 			f.list = append(f.list[:i], f.list[i+1:]...)
 		}
 	}
 
-	f.RecalculateSequences(flatBlockID)
+	f.RecalculateSequences(parentID)
 }
 
 func (f *FlatTree) Update(flatBlock FlatBlock) {

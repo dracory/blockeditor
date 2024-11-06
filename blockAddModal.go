@@ -42,6 +42,8 @@ func (e *editor) blockAddModal(r *http.Request) string {
 			EDITOR_NAME:             e.name,
 			EDITOR_HANDLER_ENDPOINT: e.handleEndpoint,
 			BLOCK_TYPE:              d.Type,
+			"parent_id":             parentID,
+			"at_position":           atPosition,
 		})
 
 		return bs.Card().
