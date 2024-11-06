@@ -7,9 +7,10 @@ import (
 	"github.com/gouniverse/utils"
 )
 
-// blockMoveUp moves the block out of the parent block
+// blockMoveUp moves the block out of the parent block, before or after
 func (b *editor) blockMoveOut(r *http.Request) string {
 	blockID := utils.Req(r, BLOCK_ID, "")
+	toPosition := utils.Req(r, "to_position", "")
 
 	if blockID == "" {
 		return hb.Wrap().
@@ -22,23 +23,29 @@ func (b *editor) blockMoveOut(r *http.Request) string {
 			ToHTML()
 	}
 
-	flatTree := NewFlatTree(b.blocks)
+	tree := NewFlatTree(b.blocks)
 
-	block := flatTree.Find(blockID)
+	block := tree.Find(blockID)
 
 	if block == nil {
 		return b.ToHTML()
 	}
 
-	parent := flatTree.Parent(block.ID)
+	parent := tree.Parent(block.ID)
 
 	if parent == nil {
 		return b.ToHTML()
 	}
 
-	flatTree.MoveToParent(block.ID, parent.ParentID)
+	if toPosition == "before" {
+		tree.MoveToPosition(block.ID, parent.ParentID, parent.Sequence)
+	} else if toPosition == "after" {
+		tree.MoveToPosition(block.ID, parent.ParentID, parent.Sequence+1)
+	} else {
+		tree.MoveToParent(block.ID, parent.ParentID)
+	}
 
-	b.blocks = flatTree.ToBlocks()
+	b.blocks = tree.ToBlocks()
 
 	return b.ToHTML()
 }

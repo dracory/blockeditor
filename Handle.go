@@ -65,6 +65,10 @@ func Handle(w http.ResponseWriter, r *http.Request, blockDefinitions []BlockDefi
 		return blockEditor.blockDelete(r)
 	}
 
+	if action == ACTION_BLOCK_DUPLICATE {
+		return blockEditor.blockDuplicate(r)
+	}
+
 	if action == ACTION_BLOCK_MOVE_UP {
 		return blockEditor.blockMoveUp(r)
 	}

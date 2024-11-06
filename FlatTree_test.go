@@ -31,6 +31,41 @@ func Test_FlatTree_Children(t *testing.T) {
 	}
 }
 
+func Test_FlatTree_Duplicate(t *testing.T) {
+	tree := NewFlatTree([]ui.BlockInterface{
+		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
+		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
+			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
+			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
+		}),
+		ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
+	})
+
+	if len(tree.list) != 5 {
+		t.Fatal("Expected 5 blocks, got:", len(tree.list))
+	}
+
+	tree.Duplicate("2")
+
+	if len(tree.list) != 8 {
+		t.Fatal("Expected 8 blocks, got:", len(tree.list))
+	}
+
+	duplicatedBlock := tree.list[5]
+
+	if duplicatedBlock.ParentID != "" {
+		t.Fatal("Expected parent ID '', got:", tree.list[5].ParentID)
+	}
+
+	if duplicatedBlock.Sequence != 4 {
+		t.Fatal("Expected sequence 4, got:", tree.list[6].Sequence)
+	}
+
+	if len(tree.Children(duplicatedBlock.ID)) != 2 {
+		t.Fatal("Expected 2 children, got:", len(tree.Children(duplicatedBlock.ID)))
+	}
+}
+
 func Test_FlatTree_Find(t *testing.T) {
 	tree := NewFlatTree([]ui.BlockInterface{
 		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
@@ -312,6 +347,51 @@ func Test_FlatTree_Remove(t *testing.T) {
 	}
 }
 
+func Test_FlatTree_RemoveOrphans(t *testing.T) {
+	tree := NewFlatTree([]ui.BlockInterface{
+		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
+		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
+			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
+			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
+			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
+		}),
+		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
+	})
+
+	// append orphan blocks
+	tree.list = append(tree.list, FlatBlock{ID: "77", Type: "orphan", ParentID: "43", Sequence: 1})
+	tree.list = append(tree.list, FlatBlock{ID: "84", Type: "orphan", ParentID: "43", Sequence: 0})
+	// prepend orphan blocks
+	tree.list = append([]FlatBlock{{ID: "73", Type: "orphan", ParentID: "43", Sequence: 1}}, tree.list...)
+	tree.list = append([]FlatBlock{{ID: "86", Type: "orphan", ParentID: "43", Sequence: 0}}, tree.list...)
+	// insert orphan blocks at the middle
+	tree.list = append(tree.list[:2], append([]FlatBlock{{ID: "99", Type: "orphan", ParentID: "43", Sequence: 1}}, tree.list[2:]...)...)
+
+	orphanIDs := []string{"77", "84", "73", "86", "99"}
+
+	for _, orphanID := range orphanIDs {
+		if !tree.Exists(orphanID) {
+			t.Fatal("Expected orphan block, got nil, ID:", orphanID)
+		}
+	}
+
+	if len(tree.list) != 11 {
+		t.Fatal("Expected 11 blocks, got:", len(tree.list))
+	}
+
+	tree.RemoveOrphans()
+
+	for _, orphanID := range orphanIDs {
+		if tree.Exists(orphanID) {
+			t.Fatal("Expected orphan block to be removed, ID:", orphanID)
+		}
+	}
+
+	if len(tree.list) != 6 {
+		t.Fatal("Expected 6 blocks, got:", len(tree.list))
+	}
+}
+
 func Test_FlatTree_RecalculateSequences(t *testing.T) {
 	tree := NewFlatTree([]ui.BlockInterface{
 		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
@@ -342,5 +422,82 @@ func Test_FlatTree_RecalculateSequences(t *testing.T) {
 
 	if tree.Children("2")[1].ID != "4" {
 		t.Fatal("Expected child ID '4', got:", tree.Children("2")[1].ID)
+	}
+}
+
+func Test_FlatTree_Traverse(t *testing.T) {
+	tree := NewFlatTree([]ui.BlockInterface{
+		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
+		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
+			ui.NewBlock().SetType("test").SetID("2.1").SetChildren([]ui.BlockInterface{
+				ui.NewBlock().SetType("test").SetID("2.1.1").SetChildren([]ui.BlockInterface{}),
+				ui.NewBlock().SetType("test").SetID("2.1.2").SetChildren([]ui.BlockInterface{}),
+			}),
+			ui.NewBlock().SetType("test").SetID("2.2").SetChildren([]ui.BlockInterface{
+				ui.NewBlock().SetType("test").SetID("2.2.1").SetChildren([]ui.BlockInterface{}),
+				ui.NewBlock().SetType("test").SetID("2.2.2").SetChildren([]ui.BlockInterface{}),
+			}),
+		}),
+		ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
+	})
+
+	blocks := tree.Traverse("2")
+
+	if len(blocks) != 7 {
+		t.Fatal("Expected 2 blocks, got:", len(blocks))
+	}
+
+	if blocks[0].ID != "2" {
+		t.Fatal("Expected block ID '2.1', got:", blocks[0].ID)
+	}
+
+	if blocks[1].ID != "2.1" {
+		t.Fatal("Expected block ID '2.1', got:", blocks[1].ID)
+	}
+
+	if blocks[2].ID != "2.1.1" {
+		t.Fatal("Expected block ID '2.1.1', got:", blocks[2].ID)
+	}
+
+	if blocks[3].ID != "2.1.2" {
+		t.Fatal("Expected block ID '2.1.2', got:", blocks[3].ID)
+	}
+
+	if blocks[4].ID != "2.2" {
+		t.Fatal("Expected block ID '2.2', got:", blocks[4].ID)
+	}
+
+	if blocks[5].ID != "2.2.1" {
+		t.Fatal("Expected block ID '2.2.1', got:", blocks[5].ID)
+	}
+
+	if blocks[6].ID != "2.2.2" {
+		t.Fatal("Expected block ID '2.2.2', got:", blocks[6].ID)
+	}
+}
+
+func Test_FlatTree_Update(t *testing.T) {
+	tree := NewFlatTree([]ui.BlockInterface{
+		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
+	})
+
+	block := tree.Find(`1`)
+
+	if block == nil {
+		t.Fatal("Expected block, got nil")
+	}
+
+	block.Type = "updated"
+
+	tree.Update(*block)
+
+	foundBlock := tree.Find(`1`)
+
+	if foundBlock == nil {
+		t.Fatal("Expected block, got nil")
+	}
+
+	if foundBlock.Type != "updated" {
+		t.Fatal("Expected type 'updated', got:", foundBlock.Type)
 	}
 }

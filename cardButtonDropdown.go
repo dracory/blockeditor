@@ -15,38 +15,6 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 
 	position := lo.IndexOf(b.blocks, block)
 
-	urlMoveDown := b.url(map[string]string{
-		ACTION:                  ACTION_BLOCK_MOVE_DOWN,
-		EDITOR_ID:               b.id,
-		EDITOR_NAME:             b.name,
-		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-		BLOCK_ID:                block.ID(),
-	})
-
-	linkMoveDown := hb.Button().
-		Child(hb.I().Class(`bi bi-arrow-down me-2`)).
-		Text("Move Down").
-		HxPost(urlMoveDown).
-		HxInclude("#" + b.id).
-		HxTarget(`#` + b.id + `_wrapper`).
-		HxSwap(`outerHTML`)
-
-	urlMoveUp := b.url(map[string]string{
-		ACTION:                  ACTION_BLOCK_MOVE_UP,
-		EDITOR_ID:               b.id,
-		EDITOR_NAME:             b.name,
-		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
-		BLOCK_ID:                block.ID(),
-	})
-
-	linkMoveUp := hb.Button().
-		Child(hb.I().Class(`bi bi-arrow-up me-2`)).
-		Text("Move Up").
-		HxPost(urlMoveUp).
-		HxInclude("#" + b.id).
-		HxTarget(`#` + b.id + `_wrapper`).
-		HxSwap(`outerHTML`)
-
 	urlAddChild := b.url(map[string]string{
 		ACTION:                  ACTION_BLOCK_ADD_MODAL,
 		EDITOR_ID:               b.id,
@@ -62,6 +30,22 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 		HxInclude("#" + b.id).
 		HxTarget(`#` + b.id + `_wrapper`).
 		HxSwap(`beforeend`)
+
+	urlDuplicate := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_DUPLICATE,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+	})
+
+	linkDuplicate := hb.Button().
+		Child(hb.I().Class(`bi bi-stack me-2`)).
+		Text("Duplicate").
+		HxPost(urlDuplicate).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
 
 	urlInsertBefore := b.url(map[string]string{
 		ACTION:                  ACTION_BLOCK_ADD_MODAL,
@@ -131,18 +115,68 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 		HxTarget(`#` + b.id + `_wrapper`).
 		HxSwap(`outerHTML`)
 
-	urlMoveOut := b.url(map[string]string{
+	urlMoveDown := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_DOWN,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+	})
+
+	linkMoveDown := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-down me-2`)).
+		Text("Move Down").
+		HxPost(urlMoveDown).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlMoveUp := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_UP,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		BLOCK_ID:                block.ID(),
+	})
+
+	linkMoveUp := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-up me-2`)).
+		Text("Move Up").
+		HxPost(urlMoveUp).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlMoveOutBefore := b.url(map[string]string{
 		ACTION:                  ACTION_BLOCK_MOVE_OUT,
 		EDITOR_ID:               b.id,
 		EDITOR_NAME:             b.name,
 		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
 		"block_id":              block.ID(),
+		"to_position":           "before",
 	})
 
-	linkMoveOut := hb.Button().
+	linkMoveOutBefore := hb.Button().
+		Child(hb.I().Class(`bi bi-arrow-up-left-square me-2`)).
+		Text("Move out before parent").
+		HxPost(urlMoveOutBefore).
+		HxInclude("#" + b.id).
+		HxTarget(`#` + b.id + `_wrapper`).
+		HxSwap(`outerHTML`)
+
+	urlMoveOutAfter := b.url(map[string]string{
+		ACTION:                  ACTION_BLOCK_MOVE_OUT,
+		EDITOR_ID:               b.id,
+		EDITOR_NAME:             b.name,
+		EDITOR_HANDLER_ENDPOINT: b.handleEndpoint,
+		"block_id":              block.ID(),
+		"to_position":           "after",
+	})
+
+	linkMoveOutAfter := hb.Button().
 		Child(hb.I().Class(`bi bi-arrow-down-left-square me-2`)).
-		Text("Move out").
-		HxPost(urlMoveOut).
+		Text("Move out after parent").
+		HxPost(urlMoveOutAfter).
 		HxInclude("#" + b.id).
 		HxTarget(`#` + b.id + `_wrapper`).
 		HxSwap(`outerHTML`)
@@ -191,27 +225,35 @@ func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 		Child(hb.UL().
 			Class("dropdown-menu").
 			ChildIf(areChildrenAllowed, hb.LI().Child(linkAddChild.Class("dropdown-item"))).
-			ChildIf(areChildrenAllowed, hb.Div().
-				Class("dropdown-divider")).
+			ChildIf(areChildrenAllowed, hb.Div().Class("dropdown-divider")).
+			// Move up
 			Child(hb.LI().Child(linkMoveUp.Class("dropdown-item"))).
+			// Move down
 			Child(hb.LI().Child(linkMoveDown.Class("dropdown-item"))).
-			Child(hb.Div().
-				Class("dropdown-divider")).
+			Child(hb.Div().Class("dropdown-divider")).
+			// Insert before
 			Child(hb.LI().Child(linkInsertBefore.Class("dropdown-item"))).
+			// Insert after
 			Child(hb.LI().Child(linkInsertAfter.Class("dropdown-item"))).
-			Child(hb.Div().
-				Class("dropdown-divider")).
+			Child(hb.Div().Class("dropdown-divider")).
+			// Move into previous
 			Child(hb.LI().Child(linkMoveIntoPrevious.Class("dropdown-item"))).
+			// Move into next
 			Child(hb.LI().Child(linkMoveIntoNext.Class("dropdown-item"))).
-			Child(hb.Div().
-				Class("dropdown-divider")).
+			// Only show the move out option if there is a parent
 			ChildIf(flatBlock.ParentID != "", hb.Div().Class("dropdown-divider")).
-			ChildIf(flatBlock.ParentID != "", hb.LI().Child(linkMoveOut.Class("dropdown-item"))).
-			Child(hb.Div().
-				Class("dropdown-divider")).
+			// Move out before
+			ChildIf(flatBlock.ParentID != "", hb.LI().Child(linkMoveOutBefore.Class("dropdown-item"))).
+			// Move out after
+			ChildIf(flatBlock.ParentID != "", hb.LI().Child(linkMoveOutAfter.Class("dropdown-item"))).
+			Child(hb.Div().Class("dropdown-divider")).
+			// Duplicate
+			Child(hb.LI().Child(linkDuplicate.Class("dropdown-item"))).
+			Child(hb.Div().Class("dropdown-divider")).
+			// Settings
 			Child(hb.LI().Child(linkSettings.Class("dropdown-item"))).
-			Child(hb.Div().
-				Class("dropdown-divider")).
+			Child(hb.Div().Class("dropdown-divider")).
+			// Delete
 			Child(hb.LI().Child(linkDelete.Class("dropdown-item"))),
 		)
 
