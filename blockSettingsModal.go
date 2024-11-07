@@ -41,23 +41,54 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 
 	fields := lo.If(definition != nil, definition.Fields).Else([]form.FieldInterface{})
 
+	// add the status field, if not already present
+	hasStatus := lo.SomeBy(fields, func(f form.FieldInterface) bool { return f.GetName() == "status" })
+
+	if !hasStatus {
+		fields = append([]form.FieldInterface{form.NewField(form.FieldOptions{
+			Name:  "status",
+			Label: "Status",
+			Type:  form.FORM_FIELD_TYPE_SELECT,
+			Options: []form.FieldOption{
+				{
+					Value: "",
+					Key:   "",
+				},
+				{
+					Value: "Published",
+					Key:   "published",
+				},
+				{
+					Value: "Unpublished",
+					Key:   "unpublished",
+				},
+			},
+			Help: "The status of the block.",
+		})}, fields...)
+	}
+
 	fieldsWithPrefix := lo.Map(fields, func(f form.FieldInterface, _ int) form.FieldInterface {
 		fieldName := f.GetName()
-
 		newField := form.NewField(form.FieldOptions{})
+
+		// if the field is not a raw field, add the prefix
 		if f.GetType() != form.FORM_FIELD_TYPE_RAW {
 			settingsFieldName := prefixKey(fieldName, SETTINGS_PREFIX)
 			newField.SetName(settingsFieldName)
 		}
+
 		newField.SetLabel(f.GetLabel())
 		newField.SetType(f.GetType())
 		newField.SetHelp(f.GetHelp())
+
+		// if the field is a raw field, set the original value
 		if f.GetType() == form.FORM_FIELD_TYPE_RAW {
 			newField.SetValue(f.GetValue())
 		} else {
 			fieldValue := block.Parameters[fieldName]
 			newField.SetValue(fieldValue)
 		}
+
 		newField.SetOptions(f.GetOptions())
 		newField.SetOptionsF(f.GetOptionsF())
 		newField.SetRequired(f.GetRequired())

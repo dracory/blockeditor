@@ -15,6 +15,11 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 	buttonDropdown := b.cardButtonDropdown(block)
 
 	definition := b.findDefinitionByType(block.Type())
+	status := block.Parameter("status")
+	cardBackgroundColor := "bg-info"
+	if status != "published" {
+		cardBackgroundColor = "bg-danger"
+	}
 
 	tag := hb.NewTag("center").
 		Child(definition.Icon).
@@ -37,7 +42,8 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 		Class(`BlockCard card`).
 		Child(
 			hb.Div().
-				Class(`card-header bg-info`).
+				Class(`card-header`).
+				Class(cardBackgroundColor).
 				Style(`--bs-bg-opacity: 0.2;`).
 				Style(`padding: 8px 10px; font-size: 12px; text-transform: uppercase; font-weight: bold;letter-spacing: 2px;`).
 				Child(buttonDropdown).
@@ -48,7 +54,8 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 				Child(buttonMoveDown),
 		).
 		Child(hb.Div().
-			Class(`card-body bg-info`).
+			Class(`card-body`).
+			Class(cardBackgroundColor).
 			//ClassIf(block.Type() == "row", `row`).
 			Style(`--bs-bg-opacity: 0.1;`).
 			Child(tag))
