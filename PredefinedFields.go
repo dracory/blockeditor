@@ -7,9 +7,9 @@ import (
 )
 
 func collapsibleStart(groupId string, groupName string, collapsed bool) string {
-	collapsedClass := "collapsed"
+	collapsedClass := "collapse show"
 	if collapsed {
-		collapsedClass = "collapsed show"
+		collapsedClass = "collapse"
 	}
 	// using card
 	return `<div class="card mb-3">

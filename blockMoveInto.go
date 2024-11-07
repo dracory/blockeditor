@@ -37,12 +37,12 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 	intoNext := inSibling == "next"
 	intoPrevious := inSibling == "previous"
 
-	flatTree := NewFlatTree(b.blocks)
+	tree := NewFlatTree(b.blocks)
 
-	blockExt := flatTree.Find(blockID)
+	block := tree.Find(blockID)
 
 	if intoPrevious {
-		previous := flatTree.FindPreviousSibling(blockExt.ID)
+		previous := tree.FindPreviousSibling(block.ID)
 
 		if previous == nil {
 			return hb.Wrap().
@@ -79,14 +79,11 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 				ToHTML()
 		}
 
-		newBlock := flatTree.Clone(*blockExt)
-
-		flatTree.Remove(blockExt.ID)
-		flatTree.Add(previous.ID, newBlock)
+		tree.MoveToParent(block.ID, previous.ID)
 	}
 
 	if intoNext {
-		next := flatTree.FindNextSibling(blockExt.ID)
+		next := tree.FindNextSibling(block.ID)
 
 		if next == nil {
 			return hb.Wrap().
@@ -123,13 +120,10 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 				ToHTML()
 		}
 
-		newBlock := flatTree.Clone(*blockExt)
-
-		flatTree.Remove(blockExt.ID)
-		flatTree.Add(next.ID, newBlock)
+		tree.MoveToParent(block.ID, next.ID)
 	}
 
-	b.blocks = flatTree.ToBlocks()
+	b.blocks = tree.ToBlocks()
 
 	return b.ToHTML()
 }
