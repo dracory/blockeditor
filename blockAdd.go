@@ -53,13 +53,13 @@ func (b *editor) blockAdd(r *http.Request) string {
 	blockNew := ui.NewBlock()
 	blockNew.SetType(blockType)
 
-	flatTree := NewFlatTree(b.blocks)
+	tree := NewFlatTree(b.blocks)
 
-	flatTree.AddBlock(parentID, blockNew)
+	tree.AddBlock(parentID, blockNew)
 
-	flatTree.MoveToPosition(blockNew.ID(), parentID, atPositionInt)
+	tree.MoveToPosition(blockNew.ID(), parentID, atPositionInt)
 
-	b.blocks = flatTree.ToBlocks()
+	b.blocks = tree.ToBlocks()
 
 	return b.ToHTML()
 }

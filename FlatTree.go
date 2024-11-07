@@ -27,7 +27,7 @@ func NewFlatTree(blocks []ui.BlockInterface) *FlatTree {
 	}
 }
 
-func (tree FlatTree) Add(parentID string, flatBlock FlatBlock) {
+func (tree *FlatTree) Add(parentID string, flatBlock FlatBlock) {
 	children := tree.Children(parentID)
 	flatBlock.Sequence = len(children)
 	flatBlock.ParentID = parentID
@@ -37,7 +37,7 @@ func (tree FlatTree) Add(parentID string, flatBlock FlatBlock) {
 }
 
 // AddBlock adds a new ui.BlockInterface to the FlatTree
-func (tree FlatTree) AddBlock(parentID string, block ui.BlockInterface) {
+func (tree *FlatTree) AddBlock(parentID string, block ui.BlockInterface) {
 	children := tree.Children(parentID)
 
 	flatBlock := FlatBlock{
@@ -54,7 +54,7 @@ func (tree FlatTree) AddBlock(parentID string, block ui.BlockInterface) {
 }
 
 // Children returns the children of the FlatBlock with the given parentID
-func (tree FlatTree) Children(parentID string) []FlatBlock {
+func (tree *FlatTree) Children(parentID string) []FlatBlock {
 	childrenExt := make([]FlatBlock, 0)
 
 	sequence := []int{}
@@ -87,7 +87,7 @@ func (tree FlatTree) Children(parentID string) []FlatBlock {
 // is not modified, but we can modify the clone safely
 //
 // Remember to update the ID, Sequence, and ParentID of the copy with new values
-func (tree FlatTree) Clone(flatBlock FlatBlock) FlatBlock {
+func (tree *FlatTree) Clone(flatBlock FlatBlock) FlatBlock {
 	return FlatBlock{
 		ID:         flatBlock.ID,
 		Type:       flatBlock.Type,
@@ -143,7 +143,7 @@ func (tree *FlatTree) Duplicate(blockID string) {
 	tree.MoveToPosition(newID, block.ParentID, block.Sequence+1)
 }
 
-func (tree FlatTree) Exists(flatBlockID string) bool {
+func (tree *FlatTree) Exists(flatBlockID string) bool {
 	for _, flatBlock := range tree.list {
 		if flatBlock.ID == flatBlockID {
 			return true
@@ -152,7 +152,7 @@ func (tree FlatTree) Exists(flatBlockID string) bool {
 	return false
 }
 
-func (tree FlatTree) Find(flatBlockID string) *FlatBlock {
+func (tree *FlatTree) Find(flatBlockID string) *FlatBlock {
 	if flatBlockID == "" {
 		return nil
 	}
@@ -165,7 +165,7 @@ func (tree FlatTree) Find(flatBlockID string) *FlatBlock {
 	return nil
 }
 
-func (tree FlatTree) FindNextSibling(flatBlockID string) *FlatBlock {
+func (tree *FlatTree) FindNextSibling(flatBlockID string) *FlatBlock {
 	block := tree.Find(flatBlockID)
 
 	children := tree.Children(block.ParentID)
@@ -185,7 +185,7 @@ func (tree FlatTree) FindNextSibling(flatBlockID string) *FlatBlock {
 	return &children[index+1]
 }
 
-func (tree FlatTree) FindPreviousSibling(flatBlockID string) *FlatBlock {
+func (tree *FlatTree) FindPreviousSibling(flatBlockID string) *FlatBlock {
 	block := tree.Find(flatBlockID)
 
 	children := tree.Children(block.ParentID)
@@ -205,7 +205,7 @@ func (tree FlatTree) FindPreviousSibling(flatBlockID string) *FlatBlock {
 	return &children[index-1]
 }
 
-func (tree FlatTree) MoveDown(flatBlockID string) {
+func (tree *FlatTree) MoveDown(flatBlockID string) {
 	block := tree.Find(flatBlockID)
 
 	if block == nil {
@@ -230,7 +230,7 @@ func (tree FlatTree) MoveDown(flatBlockID string) {
 	tree.RecalculateSequences(block.ParentID)
 }
 
-func (tree FlatTree) MoveToParent(flatBlockID string, parentID string) {
+func (tree *FlatTree) MoveToParent(flatBlockID string, parentID string) {
 	block := tree.Find(flatBlockID)
 
 	if block == nil {
@@ -288,7 +288,7 @@ func (tree *FlatTree) MoveToPosition(flatBlockID string, parentID string, positi
 	}
 }
 
-func (tree FlatTree) MoveUp(flatBlockID string) {
+func (tree *FlatTree) MoveUp(flatBlockID string) {
 	block := tree.Find(flatBlockID)
 
 	if block == nil {
@@ -313,7 +313,7 @@ func (tree FlatTree) MoveUp(flatBlockID string) {
 	tree.RecalculateSequences(block.ParentID)
 }
 
-func (tree FlatTree) Parent(flatBlockID string) *FlatBlock {
+func (tree *FlatTree) Parent(flatBlockID string) *FlatBlock {
 	block := tree.Find(flatBlockID)
 
 	if block == nil {
@@ -323,7 +323,7 @@ func (tree FlatTree) Parent(flatBlockID string) *FlatBlock {
 	return tree.Find(block.ParentID)
 }
 
-func (tree FlatTree) RecalculateSequences(blockID string) {
+func (tree *FlatTree) RecalculateSequences(blockID string) {
 	children := tree.Children(blockID)
 
 	for i, child := range children {
@@ -338,7 +338,7 @@ func (tree FlatTree) RecalculateSequences(blockID string) {
 // - checks if the block exists, if not, do nothing
 // - removes the block from the list
 // - recalculates the sequences of the parent's children
-func (tree FlatTree) Remove(flatBlockID string) {
+func (tree *FlatTree) Remove(flatBlockID string) {
 	flatBlock := tree.Find(flatBlockID)
 
 	if flatBlock == nil {
@@ -388,7 +388,7 @@ func (tree *FlatTree) RemoveOrphans() {
 	tree.list = nonOrphans
 }
 
-func (tree FlatTree) Traverse(blockID string) []FlatBlock {
+func (tree *FlatTree) Traverse(blockID string) []FlatBlock {
 	block := tree.Find(blockID)
 
 	if block == nil {
@@ -405,7 +405,7 @@ func (tree FlatTree) Traverse(blockID string) []FlatBlock {
 	return travsersed
 }
 
-func (tree FlatTree) Update(flatBlock FlatBlock) {
+func (tree *FlatTree) Update(flatBlock FlatBlock) {
 	for i, ext := range tree.list {
 		if ext.ID == flatBlock.ID {
 			tree.list[i] = flatBlock
@@ -413,7 +413,7 @@ func (tree FlatTree) Update(flatBlock FlatBlock) {
 	}
 }
 
-func (tree FlatTree) ToBlocks() []ui.BlockInterface {
+func (tree *FlatTree) ToBlocks() []ui.BlockInterface {
 	parentBlocks := tree.Children("")
 
 	blocks := make([]ui.BlockInterface, 0)
@@ -425,7 +425,7 @@ func (tree FlatTree) ToBlocks() []ui.BlockInterface {
 	return blocks
 }
 
-func (tree FlatTree) flatBlockToBlock(flatBlock FlatBlock) ui.BlockInterface {
+func (tree *FlatTree) flatBlockToBlock(flatBlock FlatBlock) ui.BlockInterface {
 	childrenExt := tree.Children(flatBlock.ID)
 
 	children := []ui.BlockInterface{}
