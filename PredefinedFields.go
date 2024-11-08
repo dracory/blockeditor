@@ -91,6 +91,41 @@ func FieldsHTML() []form.FieldInterface {
 			Help:  `Use this field to add inline styles to the HTML element.`,
 		}),
 		form.NewField(form.FieldOptions{
+			Name:  "display",
+			Label: "Display",
+			Type:  form.FORM_FIELD_TYPE_SELECT,
+			Options: []form.FieldOption{
+				{Value: "block", Key: "block"},
+				{Value: "collapse", Key: "collapse"},
+				{Value: "flex", Key: "flex"},
+				{Value: "grid", Key: "grid"},
+				{Value: "hidden", Key: "hidden"},
+				{Value: "inline", Key: "inline"},
+				{Value: "inline-block", Key: "inline-block"},
+				{Value: "inline-flex", Key: "inline-flex"},
+				{Value: "inline-grid", Key: "inline-grid"},
+				{Value: "inline-table", Key: "inline-table"},
+				{Value: "list-item", Key: "list-item"},
+				{Value: "none", Key: "none"},
+				{Value: "table", Key: "table"},
+				{Value: "table-caption", Key: "table-caption"},
+				{Value: "table-cell", Key: "table-cell"},
+				{Value: "table-column", Key: "table-column"},
+				{Value: "table-column-group", Key: "table-column-group"},
+				{Value: "table-footer-group", Key: "table-footer-group"},
+				{Value: "table-header-group", Key: "table-header-group"},
+				{Value: "table-row", Key: "table-row"},
+				{Value: "table-row-group", Key: "table-row-group"},
+				{Value: "visible", Key: "visible"},
+				{Value: "scroll", Key: "scroll"},
+				{Value: "auto", Key: "auto"},
+				{Value: "sticky", Key: "sticky"},
+				{Value: "inherit", Key: "inherit"},
+				{Value: "initial", Key: "initial"},
+				{Value: "unset", Key: "unset"},
+			},
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: collapsibleEnd(),
 		}),
@@ -101,7 +136,7 @@ func ApplyHTMLParameters(block ui.BlockInterface, blockTag *hb.Tag) {
 	id := block.Parameter("html_id")
 	class := block.Parameter("html_class")
 	style := block.Parameter("html_style")
-	color := block.Parameter("text_color")
+	display := block.Parameter("display")
 
 	if id != "" {
 		blockTag.ID(id)
@@ -115,8 +150,8 @@ func ApplyHTMLParameters(block ui.BlockInterface, blockTag *hb.Tag) {
 		blockTag.Style(style)
 	}
 
-	if color != "" {
-		blockTag.Style("color:" + color)
+	if display != "" {
+		blockTag.Style("display:" + display)
 	}
 }
 
@@ -898,6 +933,72 @@ func FieldsFlexBox() []form.FieldInterface {
 				},
 			},
 		}),
+		// justify-items
+		form.NewField(form.FieldOptions{
+			Name:  "justify_items",
+			Label: "Justify Items",
+			Type:  form.FORM_FIELD_TYPE_SELECT,
+			Help:  `Defines how the flex items are positioned accross the cross axis in the flex container, i.e. center.`,
+			Options: []form.FieldOption{
+				{
+					Value: "",
+					Key:   "",
+				},
+				{
+					Value: "center",
+					Key:   "center",
+				},
+				{
+					Value: "flex-end",
+					Key:   "flex-end",
+				},
+				{
+					Value: "flex-start",
+					Key:   "flex-start",
+				},
+				{
+					Value: "initial",
+					Key:   "initial",
+				},
+				{
+					Value: "inherit",
+					Key:   "inherit",
+				},
+			},
+		}),
+		// justify-self
+		form.NewField(form.FieldOptions{
+			Name:  "justify_self",
+			Label: "Justify Self",
+			Type:  form.FORM_FIELD_TYPE_SELECT,
+			Help:  `Defines how the flex item is positioned accross the cross axis in the flex container, i.e. center.`,
+			Options: []form.FieldOption{
+				{
+					Value: "",
+					Key:   "",
+				},
+				{
+					Value: "center",
+					Key:   "center",
+				},
+				{
+					Value: "flex-end",
+					Key:   "flex-end",
+				},
+				{
+					Value: "flex-start",
+					Key:   "flex-start",
+				},
+				{
+					Value: "initial",
+					Key:   "initial",
+				},
+				{
+					Value: "inherit",
+					Key:   "inherit",
+				},
+			},
+		}),
 		// order
 		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
@@ -936,6 +1037,12 @@ func ApplyFlexBoxParameters(block ui.BlockInterface, blockTag *hb.Tag) {
 
 	justifyContent := block.Parameter("justify_content")
 	blockTag.StyleIf(justifyContent != "", "justify-content:"+justifyContent)
+
+	justifyItems := block.Parameter("justify_items")
+	blockTag.StyleIf(justifyItems != "", "justify-items:"+justifyItems)
+
+	justifySelf := block.Parameter("justify_self")
+	blockTag.StyleIf(justifySelf != "", "justify-self:"+justifySelf)
 
 	order := block.Parameter("order")
 	blockTag.StyleIf(order != "", "order:"+order)
