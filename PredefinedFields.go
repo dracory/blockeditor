@@ -82,42 +82,6 @@ func FieldsHTML() []form.FieldInterface {
 			Help:  `Use this field to add inline styles to the HTML element.`,
 		}),
 		form.NewField(form.FieldOptions{
-			Name:  "display",
-			Label: "Display",
-			Type:  form.FORM_FIELD_TYPE_SELECT,
-			Options: []form.FieldOption{
-				{Value: "", Key: ""},
-				{Value: "block", Key: "block"},
-				{Value: "collapse", Key: "collapse"},
-				{Value: "flex", Key: "flex"},
-				{Value: "grid", Key: "grid"},
-				{Value: "hidden", Key: "hidden"},
-				{Value: "inline", Key: "inline"},
-				{Value: "inline-block", Key: "inline-block"},
-				{Value: "inline-flex", Key: "inline-flex"},
-				{Value: "inline-grid", Key: "inline-grid"},
-				{Value: "inline-table", Key: "inline-table"},
-				{Value: "list-item", Key: "list-item"},
-				{Value: "none", Key: "none"},
-				{Value: "table", Key: "table"},
-				{Value: "table-caption", Key: "table-caption"},
-				{Value: "table-cell", Key: "table-cell"},
-				{Value: "table-column", Key: "table-column"},
-				{Value: "table-column-group", Key: "table-column-group"},
-				{Value: "table-footer-group", Key: "table-footer-group"},
-				{Value: "table-header-group", Key: "table-header-group"},
-				{Value: "table-row", Key: "table-row"},
-				{Value: "table-row-group", Key: "table-row-group"},
-				{Value: "visible", Key: "visible"},
-				{Value: "scroll", Key: "scroll"},
-				{Value: "auto", Key: "auto"},
-				{Value: "sticky", Key: "sticky"},
-				{Value: "inherit", Key: "inherit"},
-				{Value: "initial", Key: "initial"},
-				{Value: "unset", Key: "unset"},
-			},
-		}),
-		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: collapsibleEnd(),
 		}),
@@ -128,7 +92,6 @@ func ApplyHTMLParameters(block ui.BlockInterface, blockTag *hb.Tag) {
 	id := block.Parameter("html_id")
 	class := block.Parameter("html_class")
 	style := block.Parameter("html_style")
-	display := block.Parameter("display")
 
 	if id != "" {
 		blockTag.ID(id)
@@ -140,10 +103,6 @@ func ApplyHTMLParameters(block ui.BlockInterface, blockTag *hb.Tag) {
 
 	if style != "" {
 		blockTag.Style(style)
-	}
-
-	if display != "" {
-		blockTag.Style("display:" + display)
 	}
 }
 
@@ -654,6 +613,12 @@ func FieldsBorder() []form.FieldInterface {
 			Help:  `The border of the block, i.e. 1px solid #000000.`,
 		}),
 		form.NewField(form.FieldOptions{
+			Name:  "border_radius",
+			Label: "Border Radius",
+			Type:  form.FORM_FIELD_TYPE_STRING,
+			Help:  `The border radius of the block, i.e. 5px.`,
+		}),
+		form.NewField(form.FieldOptions{
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: collapsibleEnd(),
 		}),
@@ -663,6 +628,86 @@ func FieldsBorder() []form.FieldInterface {
 func ApplyBorderParameters(block ui.BlockInterface, blockTag *hb.Tag) {
 	border := block.Parameter("border")
 	blockTag.StyleIf(border != "", "border:"+border)
+
+	borderRadius := block.Parameter("border_radius")
+	blockTag.StyleIf(borderRadius != "", "border-radius:"+borderRadius)
+}
+
+// FieldsDisplay is a predefined set of display fields
+// - Display (display)
+// - Visibility (visibility)
+//
+// Parameters:
+// - none
+//
+// Returns:
+// - []form.Field - The fields
+func FieldsDisplay() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
+			Type:  form.FORM_FIELD_TYPE_RAW,
+			Value: collapsibleStart("display_fields", "Display Settings", true),
+		}),
+		form.NewField(form.FieldOptions{
+			Name:  "display",
+			Label: "Display",
+			Type:  form.FORM_FIELD_TYPE_SELECT,
+			Options: []form.FieldOption{
+				{Value: "", Key: ""},
+				{Value: "block", Key: "block"},
+				{Value: "collapse", Key: "collapse"},
+				{Value: "flex", Key: "flex"},
+				{Value: "grid", Key: "grid"},
+				{Value: "hidden", Key: "hidden"},
+				{Value: "inline", Key: "inline"},
+				{Value: "inline-block", Key: "inline-block"},
+				{Value: "inline-flex", Key: "inline-flex"},
+				{Value: "inline-grid", Key: "inline-grid"},
+				{Value: "inline-table", Key: "inline-table"},
+				{Value: "list-item", Key: "list-item"},
+				{Value: "none", Key: "none"},
+				{Value: "table", Key: "table"},
+				{Value: "table-caption", Key: "table-caption"},
+				{Value: "table-cell", Key: "table-cell"},
+				{Value: "table-column", Key: "table-column"},
+				{Value: "table-column-group", Key: "table-column-group"},
+				{Value: "table-footer-group", Key: "table-footer-group"},
+				{Value: "table-header-group", Key: "table-header-group"},
+				{Value: "table-row", Key: "table-row"},
+				{Value: "table-row-group", Key: "table-row-group"},
+				{Value: "visible", Key: "visible"},
+				{Value: "scroll", Key: "scroll"},
+				{Value: "auto", Key: "auto"},
+				{Value: "sticky", Key: "sticky"},
+				{Value: "inherit", Key: "inherit"},
+				{Value: "initial", Key: "initial"},
+				{Value: "unset", Key: "unset"},
+			},
+		}),
+		form.NewField(form.FieldOptions{
+			Name:  "visibility",
+			Type:  form.FORM_FIELD_TYPE_SELECT,
+			Label: "Visibility",
+			Options: []form.FieldOption{
+				{Value: "", Key: ""},
+				{Value: "visible", Key: "visible"},
+				{Value: "hidden", Key: "hidden"},
+				{Value: "collapse", Key: "collapse"},
+			},
+		}),
+		form.NewField(form.FieldOptions{
+			Type:  form.FORM_FIELD_TYPE_RAW,
+			Value: collapsibleEnd(),
+		}),
+	}
+}
+
+func ApplyDisplayParameters(block ui.BlockInterface, blockTag *hb.Tag) {
+	display := block.Parameter("display")
+	blockTag.StyleIf(display != "", "display:"+display)
+
+	visibility := block.Parameter("visibility")
+	blockTag.StyleIf(visibility != "", "visibility:"+visibility)
 }
 
 func FieldsFlexBox() []form.FieldInterface {
@@ -1480,6 +1525,53 @@ func ApplyPositionParameters(block ui.BlockInterface, blockTag *hb.Tag) {
 
 	if left != "" {
 		blockTag.Style("left:" + left)
+	}
+}
+
+// FieldsSize is a predefined set of size fields
+// - Width (width)
+// - Height (height)
+//
+// Parameters:
+// - none
+//
+// Returns:
+// - []form.Field - The fields
+func FieldsSize() []form.FieldInterface {
+	return []form.FieldInterface{
+		form.NewField(form.FieldOptions{
+			Type:  form.FORM_FIELD_TYPE_RAW,
+			Value: collapsibleStart("size_fields", "Size Settings", true),
+		}),
+		form.NewField(form.FieldOptions{
+			Name:  "width",
+			Label: "Width",
+			Type:  form.FORM_FIELD_TYPE_STRING,
+			Help:  `The width of the block, i.e. 20px.`,
+		}),
+		form.NewField(form.FieldOptions{
+			Name:  "height",
+			Label: "Height",
+			Type:  form.FORM_FIELD_TYPE_STRING,
+			Help:  `The height of the block, i.e. 20px.`,
+		}),
+		form.NewField(form.FieldOptions{
+			Type:  form.FORM_FIELD_TYPE_RAW,
+			Value: collapsibleEnd(),
+		}),
+	}
+}
+
+func ApplySizeParameters(block ui.BlockInterface, blockTag *hb.Tag) {
+	width := block.Parameter("width")
+	height := block.Parameter("height")
+
+	if width != "" {
+		blockTag.Style("width:" + width)
+	}
+
+	if height != "" {
+		blockTag.Style("height:" + height)
 	}
 }
 
