@@ -63,15 +63,6 @@ func FieldsHTML() []form.FieldInterface {
 			Type:  form.FORM_FIELD_TYPE_RAW,
 			Value: collapsibleStart("html_fields", "HTML Settings", true),
 		}),
-		// form.NewField(form.FieldOptions{
-		// 	Type: form.FORM_FIELD_TYPE_RAW,
-		// 	Value: `<div class="card pb-3">
-		// 		<div class="card-header" data-bs-target="#html_fields" data-bs-toggle="collapse">
-		// 			<i class="bi bi-arrows-collapse"></i>
-		// 			HTML Settings
-		// 		</div>
-		// 		<div class="card-body collapse" id="html_fields">`,
-		// }),
 		form.NewField(form.FieldOptions{
 			Name:  "html_id",
 			Label: "HTML ID",
@@ -95,6 +86,7 @@ func FieldsHTML() []form.FieldInterface {
 			Label: "Display",
 			Type:  form.FORM_FIELD_TYPE_SELECT,
 			Options: []form.FieldOption{
+				{Value: "", Key: ""},
 				{Value: "block", Key: "block"},
 				{Value: "collapse", Key: "collapse"},
 				{Value: "flex", Key: "flex"},
