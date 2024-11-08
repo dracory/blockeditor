@@ -77,6 +77,7 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 			newField.SetName(settingsFieldName)
 		}
 
+		newField.SetID(f.GetID())
 		newField.SetLabel(f.GetLabel())
 		newField.SetType(f.GetType())
 		newField.SetHelp(f.GetHelp())
