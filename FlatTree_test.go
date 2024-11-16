@@ -7,14 +7,21 @@ import (
 )
 
 func Test_FlatTree_Children(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
+	blocks := ui.BlocksFromMap([]map[string]any{
+		{
+			"id": "1", "type": "test",
+		},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+			},
+		},
+		{"id": "5", "type": "test"},
 	})
+
+	tree := NewFlatTree(blocks)
 
 	chldren := tree.Children("2")
 
@@ -32,14 +39,19 @@ func Test_FlatTree_Children(t *testing.T) {
 }
 
 func Test_FlatTree_Duplicate(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{
+			"id": "1", "type": "test",
+		},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+			},
+		},
+		{"id": "5", "type": "test"},
+	}))
 
 	if len(tree.list) != 5 {
 		t.Fatal("Expected 5 blocks, got:", len(tree.list))
@@ -67,14 +79,19 @@ func Test_FlatTree_Duplicate(t *testing.T) {
 }
 
 func Test_FlatTree_Find(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{
+			"id": "1", "type": "test",
+		},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+			},
+		},
+		{"id": "5", "type": "test"},
+	}))
 
 	block := tree.Find("4")
 
@@ -88,15 +105,20 @@ func Test_FlatTree_Find(t *testing.T) {
 }
 
 func Test_FlatTree_FindNextSibling(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{
+			"id": "1", "type": "test",
+		},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	block := tree.FindNextSibling("4")
 
@@ -110,15 +132,20 @@ func Test_FlatTree_FindNextSibling(t *testing.T) {
 }
 
 func Test_FlatTree_FindPreviousSibling(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{
+			"id": "1", "type": "test",
+		},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	block := tree.FindPreviousSibling("4")
 
@@ -132,14 +159,17 @@ func Test_FlatTree_FindPreviousSibling(t *testing.T) {
 }
 
 func Test_FlatTree_FlatBlockToBlock(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+			},
+		},
+		{"id": "5", "type": "test"},
+	}))
 
 	block := tree.flatBlockToBlock(tree.list[1])
 
@@ -157,15 +187,18 @@ func Test_FlatTree_FlatBlockToBlock(t *testing.T) {
 }
 
 func Test_FlatTree_MoveDown(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	tree.MoveDown("4")
 
@@ -187,15 +220,18 @@ func Test_FlatTree_MoveDown(t *testing.T) {
 }
 
 func Test_FlatTree_MoveToParent(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	tree.MoveToParent("6", "2")
 
@@ -221,15 +257,18 @@ func Test_FlatTree_MoveToParent(t *testing.T) {
 }
 
 func Test_FlatTree_MoveToPosition(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	tree.MoveToPosition("6", "2", 2)
 
@@ -259,15 +298,18 @@ func Test_FlatTree_MoveToPosition(t *testing.T) {
 }
 
 func Test_FlatTree_MoveUp(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	tree.MoveUp("4")
 
@@ -289,14 +331,17 @@ func Test_FlatTree_MoveUp(t *testing.T) {
 }
 
 func Test_FlatTree_Parent(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+			},
+		},
+		{"id": "5", "type": "test"},
+	}))
 
 	block := tree.Parent("4")
 
@@ -314,15 +359,18 @@ func Test_FlatTree_Parent(t *testing.T) {
 }
 
 func Test_FlatTree_Remove(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	tree.Remove("4")
 
@@ -348,15 +396,18 @@ func Test_FlatTree_Remove(t *testing.T) {
 }
 
 func Test_FlatTree_RemoveOrphans(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("6").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+				{"id": "5", "type": "test"},
+			},
+		},
+		{"id": "6", "type": "test"},
+	}))
 
 	// append orphan blocks
 	tree.list = append(tree.list, FlatBlock{ID: "77", Type: "orphan", ParentID: "43", Sequence: 1})
@@ -393,14 +444,17 @@ func Test_FlatTree_RemoveOrphans(t *testing.T) {
 }
 
 func Test_FlatTree_RecalculateSequences(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-			ui.NewBlock().SetType("test").SetID("4").SetChildren([]ui.BlockInterface{}),
-		}),
-		ui.NewBlock().SetType("test").SetID("5").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{"id": "3", "type": "test"},
+				{"id": "4", "type": "test"},
+			},
+		},
+		{"id": "5", "type": "test"},
+	}))
 
 	tree.RecalculateSequences("2")
 
@@ -426,20 +480,29 @@ func Test_FlatTree_RecalculateSequences(t *testing.T) {
 }
 
 func Test_FlatTree_Traverse(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-		ui.NewBlock().SetType("test").SetID("2").SetChildren([]ui.BlockInterface{
-			ui.NewBlock().SetType("test").SetID("2.1").SetChildren([]ui.BlockInterface{
-				ui.NewBlock().SetType("test").SetID("2.1.1").SetChildren([]ui.BlockInterface{}),
-				ui.NewBlock().SetType("test").SetID("2.1.2").SetChildren([]ui.BlockInterface{}),
-			}),
-			ui.NewBlock().SetType("test").SetID("2.2").SetChildren([]ui.BlockInterface{
-				ui.NewBlock().SetType("test").SetID("2.2.1").SetChildren([]ui.BlockInterface{}),
-				ui.NewBlock().SetType("test").SetID("2.2.2").SetChildren([]ui.BlockInterface{}),
-			}),
-		}),
-		ui.NewBlock().SetType("test").SetID("3").SetChildren([]ui.BlockInterface{}),
-	})
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+		{
+			"id": "2", "type": "test",
+			"children": []map[string]any{
+				{
+					"id": "2.1", "type": "test",
+					"children": []map[string]any{
+						{"id": "2.1.1", "type": "test"},
+						{"id": "2.1.2", "type": "test"},
+					},
+				},
+				{
+					"id": "2.2", "type": "test",
+					"children": []map[string]any{
+						{"id": "2.2.1", "type": "test"},
+						{"id": "2.2.2", "type": "test"},
+					},
+				},
+			},
+		},
+		{"id": "3", "type": "test"},
+	}))
 
 	blocks := tree.Traverse("2")
 
@@ -477,9 +540,13 @@ func Test_FlatTree_Traverse(t *testing.T) {
 }
 
 func Test_FlatTree_Update(t *testing.T) {
-	tree := NewFlatTree([]ui.BlockInterface{
-		ui.NewBlock().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-	})
+	// tree := NewFlatTree([]ui.BlockInterface{
+	// 	ui.Block().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
+	// })
+
+	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+		{"id": "1", "type": "test"},
+	}))
 
 	block := tree.Find(`1`)
 

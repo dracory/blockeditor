@@ -433,7 +433,7 @@ func (tree *FlatTree) flatBlockToBlock(flatBlock FlatBlock) ui.BlockInterface {
 		children = append(children, tree.flatBlockToBlock(childExt))
 	}
 
-	block := ui.NewFromMap(map[string]interface{}{
+	block := ui.BlockFromMap(map[string]interface{}{
 		"id":         flatBlock.ID,
 		"type":       flatBlock.Type,
 		"parameters": flatBlock.Parameters,
