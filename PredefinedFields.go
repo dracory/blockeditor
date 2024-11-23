@@ -6,12 +6,13 @@ import (
 	"github.com/gouniverse/ui"
 )
 
-func collapsibleStart(groupId string, groupName string, collapsed bool) string {
+func collapsibleStart(groupId, groupName string, collapsed bool) string {
 	collapsedClass := "collapse show"
+
 	if collapsed {
 		collapsedClass = "collapse"
 	}
-	// using card
+
 	return `<div class="card mb-3">
 		<div class="card-header" data-bs-target="#` + groupId + `" data-bs-toggle="collapse" style="cursor:pointer; background-color: #CCEBF8;">
 		    <h5>
@@ -20,20 +21,13 @@ func collapsibleStart(groupId string, groupName string, collapsed bool) string {
 			</h5>
 		</div>
 		<div class="card-body ` + collapsedClass + `" id="` + groupId + `" style="background-color: #E5F5FC;">`
-
-	// // using fieldset
-	// return `<fieldset data-bs-target="#` + groupId + `" data-bs-toggle="collapse"><legend><i class="bi bi-arrows-collapse"></i> ` + groupName + `</legend><div id="` + groupId + `" class="collapse">`
 }
 
 func collapsibleEnd() string {
-	// using card
 	return `</div></div>`
-
-	// // using fieldset
-	// return `</div></fieldset>`
 }
 
-func FieldGroupStart(groupId string, groupName string, collapsed bool) form.FieldInterface {
+func FieldGroupStart(groupId, groupName string, collapsed bool) form.FieldInterface {
 	return form.NewField(form.FieldOptions{
 		Type:  form.FORM_FIELD_TYPE_RAW,
 		Value: collapsibleStart(groupId, groupName, collapsed),

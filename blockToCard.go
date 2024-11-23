@@ -63,7 +63,6 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 		Child(hb.Div().
 			Class(`card-body`).
 			Class(cardBackgroundColor).
-			//ClassIf(block.Type() == "row", `row`).
 			Style(`--bs-bg-opacity: 0.1;`).
 			Child(tag))
 		// ChildIf(len(block.Children()) < 1, b.blockDivider().Child(b.buttonBlockInsert(blockExt.ID, 0, false))).

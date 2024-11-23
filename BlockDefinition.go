@@ -34,5 +34,5 @@ type BlockDefinition struct {
 	// ToHTML is a function that converts a block to HTML to be displayed
 	// in the block card in the editor
 	// Deprecated
-	//ToHTML func(block ui.BlockInterface) string // optional
+	// ToHTML func(block ui.BlockInterface) string // optional
 }

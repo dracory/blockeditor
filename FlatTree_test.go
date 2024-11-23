@@ -410,8 +410,10 @@ func Test_FlatTree_RemoveOrphans(t *testing.T) {
 	}))
 
 	// append orphan blocks
-	tree.list = append(tree.list, FlatBlock{ID: "77", Type: "orphan", ParentID: "43", Sequence: 1})
-	tree.list = append(tree.list, FlatBlock{ID: "84", Type: "orphan", ParentID: "43", Sequence: 0})
+	tree.list = append(tree.list,
+		FlatBlock{ID: "77", Type: "orphan", ParentID: "43", Sequence: 1},
+		FlatBlock{ID: "84", Type: "orphan", ParentID: "43", Sequence: 0},
+	)
 	// prepend orphan blocks
 	tree.list = append([]FlatBlock{{ID: "73", Type: "orphan", ParentID: "43", Sequence: 1}}, tree.list...)
 	tree.list = append([]FlatBlock{{ID: "86", Type: "orphan", ParentID: "43", Sequence: 0}}, tree.list...)
@@ -540,10 +542,6 @@ func Test_FlatTree_Traverse(t *testing.T) {
 }
 
 func Test_FlatTree_Update(t *testing.T) {
-	// tree := NewFlatTree([]ui.BlockInterface{
-	// 	ui.Block().SetType("test").SetID("1").SetChildren([]ui.BlockInterface{}),
-	// })
-
 	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
 		{"id": "1", "type": "test"},
 	}))

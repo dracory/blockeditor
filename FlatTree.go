@@ -238,7 +238,7 @@ func (tree *FlatTree) MoveDown(flatBlockID string) {
 	tree.RecalculateSequences(block.ParentID)
 }
 
-func (tree *FlatTree) MoveToParent(flatBlockID string, parentID string) {
+func (tree *FlatTree) MoveToParent(flatBlockID, parentID string) {
 	block := tree.Find(flatBlockID)
 
 	if block == nil {
@@ -256,13 +256,10 @@ func (tree *FlatTree) MoveToParent(flatBlockID string, parentID string) {
 
 	tree.Update(*block)
 
-	//tree.Remove(flatBlockID)
-	//tree.Add(parentID, *block)
-
 	tree.RecalculateSequences(parentID)
 }
 
-func (tree *FlatTree) MoveToPosition(flatBlockID string, parentID string, position int) {
+func (tree *FlatTree) MoveToPosition(flatBlockID, parentID string, position int) {
 	tree.MoveToParent(flatBlockID, parentID)
 
 	block := tree.Find(flatBlockID)

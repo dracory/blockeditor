@@ -144,7 +144,6 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 		HxInclude("#ModalBlockUpdate").
 		HxTarget(`#` + b.id + `_wrapper`).
 		HxSwap(`outerHTML`)
-		// OnClick(modalCloseScript)
 
 	modal := bs.Modal().
 		ID("ModalBlockUpdate").
