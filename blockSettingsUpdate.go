@@ -5,7 +5,6 @@ import (
 
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/utils"
-	"github.com/mingrammer/cfmt"
 )
 
 // blockSettingsUpdate updates the block settings
@@ -40,7 +39,6 @@ func (b *editor) blockSettingsUpdate(r *http.Request) string {
 	settings := b.findPostedSettings(r)
 
 	if len(settings) > 0 {
-		cfmt.Warningln("Settings: ", settings)
 		flatBlock.Parameters = settings
 	}
 
