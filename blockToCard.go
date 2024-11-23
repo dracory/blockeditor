@@ -15,6 +15,13 @@ func (b *editor) blockToCard(block ui.BlockInterface) *hb.Tag {
 	buttonDropdown := b.cardButtonDropdown(block)
 
 	definition := b.findDefinitionByType(block.Type())
+
+	if definition == nil {
+		return hb.Div().
+			Class("alert alert-warning").
+			Text("Block " + block.Type() + " renderer does not exist")
+	}
+
 	status := block.Parameter("status")
 	cardBackgroundColor := "bg-info"
 	if status != "published" {

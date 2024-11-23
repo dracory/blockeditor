@@ -41,6 +41,10 @@ func (b *editor) blockMoveInto(r *http.Request) string {
 
 	block := tree.Find(blockID)
 
+	if block == nil {
+		return b.ToHTML()
+	}
+
 	if intoPrevious {
 		previous := tree.FindPreviousSibling(block.ID)
 

@@ -46,10 +46,6 @@ func (b *editor) blockSettingsUpdate(r *http.Request) string {
 
 	flatTree.Update(*flatBlock)
 
-	new := flatTree.Find(blockID)
-
-	cfmt.Successln("New params: ", new.Parameters)
-
 	b.blocks = flatTree.ToBlocks()
 
 	modalCloseScript := `document.getElementById('ModalBlockUpdate').remove();document.getElementById('ModalBackdrop').remove();`
@@ -66,6 +62,10 @@ func (b *editor) findPostedSettings(r *http.Request) map[string]string {
 	settings := map[string]string{}
 
 	for key, values := range all {
+		if len(values) == 0 {
+			continue
+		}
+
 		value := values[0]
 		if isPrefixedKey(key, SETTINGS_PREFIX) {
 			origKey := unprefixKey(key, SETTINGS_PREFIX)

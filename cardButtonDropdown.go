@@ -9,7 +9,16 @@ import (
 
 func (b *editor) cardButtonDropdown(block ui.BlockInterface) hb.TagInterface {
 	flatBlock := NewFlatTree(b.blocks).Find(block.ID())
+
+	if flatBlock == nil {
+		return nil
+	}
+
 	definition := b.findDefinitionByType(flatBlock.Type)
+
+	if definition == nil {
+		return nil
+	}
 
 	areChildrenAllowed := lo.TernaryF(definition == nil, func() bool { return false }, func() bool { return definition.AllowChildren })
 

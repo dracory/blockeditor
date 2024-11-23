@@ -168,6 +168,10 @@ func (tree *FlatTree) Find(flatBlockID string) *FlatBlock {
 func (tree *FlatTree) FindNextSibling(flatBlockID string) *FlatBlock {
 	block := tree.Find(flatBlockID)
 
+	if block == nil {
+		return nil
+	}
+
 	children := tree.Children(block.ParentID)
 
 	_, index, found := lo.FindIndexOf(children, func(bExt FlatBlock) bool {
@@ -187,6 +191,10 @@ func (tree *FlatTree) FindNextSibling(flatBlockID string) *FlatBlock {
 
 func (tree *FlatTree) FindPreviousSibling(flatBlockID string) *FlatBlock {
 	block := tree.Find(flatBlockID)
+
+	if block == nil {
+		return nil
+	}
 
 	children := tree.Children(block.ParentID)
 

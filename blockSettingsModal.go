@@ -39,7 +39,8 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 
 	definition := b.findDefinitionByType(block.Type)
 
-	fields := lo.If(definition != nil, definition.Fields).Else([]form.FieldInterface{})
+	fields := lo.IfF(definition != nil, func() []form.FieldInterface { return definition.Fields }).
+		Else([]form.FieldInterface{})
 
 	// add the status field, if not already present
 	hasStatus := lo.SomeBy(fields, func(f form.FieldInterface) bool { return f.GetName() == "status" })
