@@ -50,7 +50,7 @@ func (b *editor) blockAdd(r *http.Request) string {
 			ToHTML()
 	}
 
-	blockNew := ui.Block()
+	blockNew := ui.NewBlock()
 	blockNew.SetType(blockType)
 
 	tree := NewFlatTree(b.blocks)

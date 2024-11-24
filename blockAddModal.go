@@ -17,7 +17,7 @@ func (e *editor) blockAddModal(r *http.Request) string {
 
 	modalCloseScript := `document.getElementById('ModalBlockAdd').remove();document.getElementById('ModalBackdrop').remove();`
 
-	blocksJSON, err := ui.BlocksToJson(e.blocks)
+	blocksJSON, err := ui.MarshalBlocksToJson(e.blocks)
 
 	if err != nil {
 		return err.Error()

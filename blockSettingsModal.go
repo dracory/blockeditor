@@ -106,7 +106,7 @@ func (b *editor) blockSettingsModal(r *http.Request) string {
 		Fields: fieldsWithPrefix,
 	})
 
-	blocksJSON, err := ui.BlocksToJson(b.blocks)
+	blocksJSON, err := ui.MarshalBlocksToJson(b.blocks)
 
 	if err != nil {
 		return err.Error()

@@ -7,7 +7,7 @@ import (
 )
 
 func Test_FlatTree_Children(t *testing.T) {
-	blocks := ui.BlocksFromMap([]map[string]any{
+	blocks := ui.ConvertMapToBlocks([]map[string]any{
 		{
 			"id": "1", "type": "test",
 		},
@@ -39,7 +39,7 @@ func Test_FlatTree_Children(t *testing.T) {
 }
 
 func Test_FlatTree_Duplicate(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{
 			"id": "1", "type": "test",
 		},
@@ -79,7 +79,7 @@ func Test_FlatTree_Duplicate(t *testing.T) {
 }
 
 func Test_FlatTree_Find(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{
 			"id": "1", "type": "test",
 		},
@@ -105,7 +105,7 @@ func Test_FlatTree_Find(t *testing.T) {
 }
 
 func Test_FlatTree_FindNextSibling(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{
 			"id": "1", "type": "test",
 		},
@@ -132,7 +132,7 @@ func Test_FlatTree_FindNextSibling(t *testing.T) {
 }
 
 func Test_FlatTree_FindPreviousSibling(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{
 			"id": "1", "type": "test",
 		},
@@ -159,7 +159,7 @@ func Test_FlatTree_FindPreviousSibling(t *testing.T) {
 }
 
 func Test_FlatTree_FlatBlockToBlock(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -187,7 +187,7 @@ func Test_FlatTree_FlatBlockToBlock(t *testing.T) {
 }
 
 func Test_FlatTree_MoveDown(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -220,7 +220,7 @@ func Test_FlatTree_MoveDown(t *testing.T) {
 }
 
 func Test_FlatTree_MoveToParent(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -257,7 +257,7 @@ func Test_FlatTree_MoveToParent(t *testing.T) {
 }
 
 func Test_FlatTree_MoveToPosition(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -298,7 +298,7 @@ func Test_FlatTree_MoveToPosition(t *testing.T) {
 }
 
 func Test_FlatTree_MoveUp(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -331,7 +331,7 @@ func Test_FlatTree_MoveUp(t *testing.T) {
 }
 
 func Test_FlatTree_Parent(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -359,7 +359,7 @@ func Test_FlatTree_Parent(t *testing.T) {
 }
 
 func Test_FlatTree_Remove(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -396,7 +396,7 @@ func Test_FlatTree_Remove(t *testing.T) {
 }
 
 func Test_FlatTree_RemoveOrphans(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -446,7 +446,7 @@ func Test_FlatTree_RemoveOrphans(t *testing.T) {
 }
 
 func Test_FlatTree_RecalculateSequences(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -482,7 +482,7 @@ func Test_FlatTree_RecalculateSequences(t *testing.T) {
 }
 
 func Test_FlatTree_Traverse(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 		{
 			"id": "2", "type": "test",
@@ -542,7 +542,7 @@ func Test_FlatTree_Traverse(t *testing.T) {
 }
 
 func Test_FlatTree_Update(t *testing.T) {
-	tree := NewFlatTree(ui.BlocksFromMap([]map[string]any{
+	tree := NewFlatTree(ui.ConvertMapToBlocks([]map[string]any{
 		{"id": "1", "type": "test"},
 	}))
 

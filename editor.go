@@ -23,7 +23,7 @@ type editor struct {
 }
 
 func (b *editor) ToHTML() string {
-	blocksJSON, err := ui.BlocksToJson(b.blocks)
+	blocksJSON, err := ui.MarshalBlocksToJson(b.blocks)
 
 	if err != nil {
 		return err.Error()

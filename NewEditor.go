@@ -37,7 +37,7 @@ func NewEditor(options NewEditorOptions) (*editor, error) {
 		return nil, errors.New("value is not valid JSON")
 	}
 
-	blocks, err := ui.BlocksFromJson(options.Value)
+	blocks, err := ui.UnmarshalJsonToBlocks(options.Value)
 
 	if err != nil {
 		return nil, err
