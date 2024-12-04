@@ -337,6 +337,10 @@ func (tree *FlatTree) RecalculateSequences(blockID string) {
 	}
 }
 
+func (tree *FlatTree) List() []FlatBlock {
+	return tree.list
+}
+
 // Remove removes the block with the given id
 //
 // Buisiness Logic:
