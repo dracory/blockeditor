@@ -3,17 +3,17 @@ package blockeditor
 import (
 	"net/http"
 
-	"github.com/gouniverse/bs"
-	"github.com/gouniverse/form"
+	"github.com/dracory/bs"
+	"github.com/dracory/form"
+	"github.com/dracory/req"
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/ui"
-	"github.com/gouniverse/utils"
 	"github.com/samber/lo"
 )
 
 // blockSettingsModal shows the block settings modal
 func (b *editor) blockSettingsModal(r *http.Request) string {
-	blockID := utils.Req(r, BLOCK_ID, "")
+	blockID := req.GetString(r, BLOCK_ID)
 
 	if blockID == "" {
 		return hb.Wrap().

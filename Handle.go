@@ -3,7 +3,7 @@ package blockeditor
 import (
 	"net/http"
 
-	"github.com/gouniverse/utils"
+	"github.com/dracory/req"
 )
 
 // Handle handles the block editor
@@ -23,11 +23,11 @@ import (
 // Returns:
 // - the response string
 func Handle(w http.ResponseWriter, r *http.Request, blockDefinitions []BlockDefinition) string {
-	action := utils.Req(r, ACTION, "")
-	editorID := utils.Req(r, EDITOR_ID, "")
-	editorName := utils.Req(r, EDITOR_NAME, "")
-	editorContent := utils.Req(r, editorName, "")
-	editorHandlerEndpoint := utils.Req(r, EDITOR_HANDLER_ENDPOINT, "")
+	action := req.GetString(r, ACTION)
+	editorID := req.GetString(r, EDITOR_ID)
+	editorName := req.GetString(r, EDITOR_NAME)
+	editorContent := req.GetString(r, editorName)
+	editorHandlerEndpoint := req.GetString(r, EDITOR_HANDLER_ENDPOINT)
 
 	if editorID == "" {
 		return "no editor id"

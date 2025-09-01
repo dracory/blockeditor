@@ -3,13 +3,13 @@ package blockeditor
 import (
 	"net/http"
 
+	"github.com/dracory/req"
 	"github.com/gouniverse/hb"
-	"github.com/gouniverse/utils"
 )
 
 // blockDelete removes a block from the editor
 func (b *editor) blockDelete(r *http.Request) string {
-	blockID := utils.Req(r, BLOCK_ID, "")
+	blockID := req.GetString(r, BLOCK_ID)
 
 	if blockID == "" {
 		return hb.Wrap().

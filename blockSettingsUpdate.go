@@ -3,13 +3,13 @@ package blockeditor
 import (
 	"net/http"
 
+	"github.com/dracory/req"
 	"github.com/gouniverse/hb"
-	"github.com/gouniverse/utils"
 )
 
 // blockSettingsUpdate updates the block settings
 func (b *editor) blockSettingsUpdate(r *http.Request) string {
-	blockID := utils.Req(r, BLOCK_ID, "")
+	blockID := req.GetString(r, BLOCK_ID)
 
 	if blockID == "" {
 		return hb.Wrap().
@@ -51,7 +51,7 @@ func (b *editor) blockSettingsUpdate(r *http.Request) string {
 }
 
 func (b *editor) findPostedSettings(r *http.Request) map[string]string {
-	all := utils.ReqAll(r)
+	all := req.GetAll(r)
 
 	if len(all) == 0 {
 		return map[string]string{}

@@ -3,9 +3,8 @@ package blockeditor
 import (
 	"errors"
 
+	"github.com/dracory/uid"
 	"github.com/gouniverse/ui"
-	"github.com/gouniverse/uid"
-	"github.com/gouniverse/utils"
 )
 
 type NewEditorOptions struct {
@@ -33,7 +32,7 @@ func NewEditor(options NewEditorOptions) (*editor, error) {
 		return nil, errors.New("no value")
 	}
 
-	if !utils.IsJSON(options.Value) {
+	if !isJSON(options.Value) {
 		return nil, errors.New("value is not valid JSON")
 	}
 

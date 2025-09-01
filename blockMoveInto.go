@@ -3,14 +3,14 @@ package blockeditor
 import (
 	"net/http"
 
+	"github.com/dracory/req"
 	"github.com/gouniverse/hb"
-	"github.com/gouniverse/utils"
 )
 
 // blockMoveUp moves the block into the previous block
 func (b *editor) blockMoveInto(r *http.Request) string {
-	blockID := utils.Req(r, BLOCK_ID, "")
-	inSibling := utils.Req(r, "in_sibling", "")
+	blockID := req.GetString(r, BLOCK_ID)
+	inSibling := req.GetString(r, "in_sibling")
 
 	if blockID == "" {
 		return hb.Wrap().

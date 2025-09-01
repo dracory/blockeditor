@@ -3,17 +3,17 @@ package blockeditor
 import (
 	"net/http"
 
-	"github.com/gouniverse/bs"
+	"github.com/dracory/bs"
+	"github.com/dracory/req"
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/ui"
-	"github.com/gouniverse/utils"
 	"github.com/samber/lo"
 )
 
 // blockAddModal shows the block add modal
 func (e *editor) blockAddModal(r *http.Request) string {
-	atPosition := utils.Req(r, "at_position", "0")
-	parentID := utils.Req(r, "parent_id", "")
+	atPosition := req.GetString(r, "at_position")
+	parentID := req.GetString(r, "parent_id")
 
 	modalCloseScript := `document.getElementById('ModalBlockAdd').remove();document.getElementById('ModalBackdrop').remove();`
 

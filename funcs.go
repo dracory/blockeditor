@@ -26,3 +26,16 @@ func trimPrefixedKey(key, prefix string) string {
 	}
 	return key
 }
+
+// isJSON is naive implementation for superficial, rough and fast checking for JSON
+func isJSON(str string) bool {
+	if strings.HasPrefix(str, "{") && strings.HasSuffix(str, "}") {
+		return true
+	}
+
+	if strings.HasPrefix(str, "[") && strings.HasSuffix(str, "]") {
+		return true
+	}
+
+	return false
+}

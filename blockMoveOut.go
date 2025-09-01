@@ -3,14 +3,14 @@ package blockeditor
 import (
 	"net/http"
 
+	"github.com/dracory/req"
 	"github.com/gouniverse/hb"
-	"github.com/gouniverse/utils"
 )
 
 // blockMoveUp moves the block out of the parent block, before or after
 func (b *editor) blockMoveOut(r *http.Request) string {
-	blockID := utils.Req(r, BLOCK_ID, "")
-	toPosition := utils.Req(r, "to_position", "")
+	blockID := req.GetString(r, BLOCK_ID)
+	toPosition := req.GetString(r, "to_position")
 
 	if blockID == "" {
 		return hb.Wrap().

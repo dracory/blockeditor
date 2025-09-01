@@ -4,16 +4,16 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/dracory/req"
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/ui"
-	"github.com/gouniverse/utils"
 )
 
 // blockAdd creates a new block and inserts it at the specified position
 func (b *editor) blockAdd(r *http.Request) string {
-	blockType := utils.Req(r, BLOCK_TYPE, "")
-	atPosition := utils.Req(r, "at_position", "")
-	parentID := utils.Req(r, "parent_id", "")
+	blockType := req.GetString(r, BLOCK_TYPE)
+	atPosition := req.GetString(r, "at_position")
+	parentID := req.GetString(r, "parent_id")
 
 	if blockType == "" {
 		return hb.Wrap().
