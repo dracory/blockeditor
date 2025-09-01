@@ -2,8 +2,8 @@ package blockeditor
 
 import (
 	"github.com/dracory/form"
+	"github.com/dracory/hb"
 	"github.com/dracory/ui"
-	"github.com/gouniverse/hb"
 )
 
 type BlockDefinition struct {

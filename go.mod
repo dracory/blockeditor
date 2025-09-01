@@ -3,12 +3,12 @@ module github.com/dracory/blockeditor
 go 1.24.5
 
 require (
-	github.com/dracory/bs v0.14.0
-	github.com/dracory/form v0.18.0
+	github.com/dracory/bs v0.15.0
+	github.com/dracory/form v0.19.0
+	github.com/dracory/hb v1.88.0
 	github.com/dracory/req v0.1.0
 	github.com/dracory/ui v0.17.0
 	github.com/dracory/uid v1.8.0
-	github.com/gouniverse/hb v1.87.0
 	github.com/samber/lo v1.51.0
 	github.com/spf13/cast v1.9.2
 )

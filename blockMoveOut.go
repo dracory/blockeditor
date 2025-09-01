@@ -3,8 +3,8 @@ package blockeditor
 import (
 	"net/http"
 
+	"github.com/dracory/hb"
 	"github.com/dracory/req"
-	"github.com/gouniverse/hb"
 )
 
 // blockMoveUp moves the block out of the parent block, before or after

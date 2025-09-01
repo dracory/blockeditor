@@ -1,8 +1,8 @@
 package blockeditor
 
 import (
+	"github.com/dracory/hb"
 	"github.com/dracory/ui"
-	"github.com/gouniverse/hb"
 	"github.com/samber/lo"
 )
 

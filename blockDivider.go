@@ -1,6 +1,6 @@
 package blockeditor
 
-import "github.com/gouniverse/hb"
+import "github.com/dracory/hb"
 
 // blockDivider creates a divider
 func (b *editor) blockDivider() *hb.Tag {

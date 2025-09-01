@@ -1,6 +1,6 @@
 package blockeditor
 
-import "github.com/gouniverse/hb"
+import "github.com/dracory/hb"
 
 func (b *editor) cardButtonMoveUp(blockID string) *hb.Tag {
 	icon := hb.I().Class(`bi bi-arrow-up`)

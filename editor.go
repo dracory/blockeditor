@@ -3,8 +3,8 @@ package blockeditor
 import (
 	"strings"
 
+	"github.com/dracory/hb"
 	"github.com/dracory/ui"
-	"github.com/gouniverse/hb"
 	"github.com/samber/lo"
 )
 
