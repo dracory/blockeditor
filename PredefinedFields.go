@@ -2,8 +2,8 @@ package blockeditor
 
 import (
 	"github.com/dracory/form"
+	"github.com/dracory/ui"
 	"github.com/gouniverse/hb"
-	"github.com/gouniverse/ui"
 )
 
 func collapsibleStart(groupId, groupName string, collapsed bool) string {

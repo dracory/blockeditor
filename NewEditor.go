@@ -3,8 +3,8 @@ package blockeditor
 import (
 	"errors"
 
+	"github.com/dracory/ui"
 	"github.com/dracory/uid"
-	"github.com/gouniverse/ui"
 )
 
 type NewEditorOptions struct {

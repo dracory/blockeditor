@@ -3,8 +3,8 @@ package blockeditor
 import (
 	"sort"
 
+	"github.com/dracory/ui"
 	"github.com/dracory/uid"
-	"github.com/gouniverse/ui"
 	"github.com/samber/lo"
 )
 

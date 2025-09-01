@@ -3,7 +3,7 @@ package blockeditor
 import (
 	"testing"
 
-	"github.com/gouniverse/ui"
+	"github.com/dracory/ui"
 )
 
 func Test_FlatTree_Children(t *testing.T) {
